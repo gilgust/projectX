@@ -1,0 +1,59 @@
+﻿<Window x:Class="projectX.CasesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:projectX"
+        xmlns:views="clr-namespace:projectX.Views"
+        mc:Ignorable="d"
+        Title="CasesWindow" Height="400" Width="600">
+	<Window.Resources>
+		<Style TargetType="TextBlock">
+			<Setter Property="FontSize" Value="14"/>
+		</Style>
+		<Style TargetType="TextBox">
+			<Setter Property="FontSize" Value="14" />
+		</Style>
+		<Style TargetType="Button">
+			<Setter Property="Width" Value="40"/>
+			<Setter Property="Margin" Value="5"/>
+		</Style>
+		
+		<DataTemplate DataType="{x:Type views:CaseInfoView}">
+			<views:CaseInfoView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type views:EditCaseView}">
+			<views:EditCaseView/>
+		</DataTemplate>
+
+	</Window.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/> 
+			<ColumnDefinition Width="1.5*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="35"/>
+		</Grid.RowDefinitions>
+
+		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Cases}" SelectedItem="{Binding SelectedCase}">
+			<ListBox.ItemTemplate>
+				<DataTemplate>
+					<TextBlock FontSize="18" Text="{Binding Path=Name}"/>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+
+		<ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding CurrentView}"/>
+
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"> 
+			<Button Content="Edit" Command="{Binding Path=EditCaseCommand}"/>
+			<Button Content="Create" Command="{Binding Path=CreateCaseCommand}"/>
+			<Button Content="Delete" Command="{Binding Path=DeleteCaseCommand}"/>
+
+		</StackPanel>
+		 
+	</Grid>
+
+</Window>
