@@ -90,7 +90,11 @@ namespace projectX.ViewModel
             get
             {
                 return _createCaseCommand ??
-                       (_createCaseCommand = new RelayCommand(obj => { CurrentView = _createCaseView; }));
+                       (_createCaseCommand = new RelayCommand(obj =>
+                       {
+                           SelectedCase = null;
+                           CurrentView = _createCaseView;
+                       }));
             }
         }
 

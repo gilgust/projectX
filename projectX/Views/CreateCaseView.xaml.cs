@@ -31,16 +31,20 @@ namespace projectX.Views
         }
 
         private void add_mark(object sender, RoutedEventArgs e)
-        {
-            var VM = DataContext as CreateCaseViewModel;
-            //VM.NewCase.Marks.Add(TextBoxNewMark.Text);
-          //  TextBoxNewMark.Text = string.Empty;
+        { 
         }
 
         private void Delete_Mark(object sender, RoutedEventArgs e)
+        { 
+        }
+
+        private void Add_Img(object sender, RoutedEventArgs e)
         {
-            var VM = DataContext as CreateCaseViewModel;
-        //    VM.NewCase.Marks.Remove(TextBoxNewMark.Text);
+            var cont = DataContext as CreateCaseViewModel;
+            var imjList = cont.NewCase.ImgSrc;
+            imjList.Add(@"G:/nuw4Tp80cqs.jpg");
+            var markList = cont.NewCase.Marks;
+            markList.Add("111111");
         }
     }
 }

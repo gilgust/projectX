@@ -40,10 +40,35 @@
 					</ListBox.ItemTemplate>
 				</ListBox>
 				<TextBox Text="{Binding SelectedMark, UpdateSourceTrigger=PropertyChanged}"/> 
+
 				<StackPanel Orientation="Horizontal"> 
 					<Button Content="Add mark" Command="{Binding Path=AddMarkCommnad}"/>
 					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding SelectedMark}"/> 
 				</StackPanel>
+
+				<TextBlock Text="Img"/>
+				<ListBox ItemsSource="{Binding Path=mgSrc}" SelectedItem="{Binding SelectedImg}">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					 
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<Image Source="{Binding}" Width="40"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+
+				<StackPanel Orientation="Horizontal">
+					<Button Content="Add mark" Command="{Binding Path=AddImgCommand}"/>
+					<Button Content="delete mark" Command="{Binding Path=DeleteImgCommnad}" CommandParameter="{Binding SelectedImg}"/>
+					<Button Content="Add mark" Click="Add_Img"/> 
+				</StackPanel>
+
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>

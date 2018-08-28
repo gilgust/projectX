@@ -19,9 +19,9 @@ namespace projectX.domain
         //ctor
         public Case()
         {
-            Marks = new ObservableCollection<string>();
             Proects = new List<Proect>();
-            ImgSrc = new List<string>();
+            Marks = new ObservableCollection<string>();
+            ImgSrc = new ObservableCollection<string>();
         }
 
 
@@ -48,11 +48,11 @@ namespace projectX.domain
             }
         }
 
-        public ObservableCollection<string> Marks { get; set; }
-
         public List<Proect> Proects { get; set; }
 
-        public List<string> ImgSrc { get; set; }
+        public ObservableCollection<string> Marks { get; set; }
+
+        public ObservableCollection<string> ImgSrc { get; set; }
 
         #endregion
 

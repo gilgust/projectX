@@ -18,13 +18,18 @@ namespace projectX.ViewModel
         private readonly ObservableCollection<Case> _cases;
         private readonly IDialogService _dialogService;
         private string _selectedMark;
+        private string _selectedImg;
 
         public CreateCaseViewModel(ObservableCollection<Case> cases, IDialogService dialogService)
-        {
+        { 
             _selectedMark = null;
-            _cases = cases;
+            _selectedImg = null;
+
             _dialogService = dialogService;
+            _cases = cases;
+
             _case = new Case {Name = string.Empty, Description = string.Empty};
+
             _case.PropertyChanged += Case_propertyChanged;
         }
 
@@ -38,11 +43,20 @@ namespace projectX.ViewModel
             get => _case;
             set
             {
-                if(_case != value)
-                {
-                    _case = value;
-                    OnPropertyChanged(nameof(NewCase));
-                }
+                if (_case == value) return;
+                _case = value;
+                OnPropertyChanged(nameof(NewCase));
+            }
+        }
+
+        public string SelectedImg
+        {
+            get => _selectedImg;
+            set
+            {
+                if (_selectedImg == value) return;
+                _selectedImg = value;
+                OnPropertyChanged(nameof(SelectedImg));
             }
         }
 
@@ -51,18 +65,16 @@ namespace projectX.ViewModel
             get => _selectedMark;
             set
             {
-                if (_selectedMark != value)
-                {
-                    _selectedMark = value;
-                    OnPropertyChanged(nameof(SelectedMark));
-                }
+                if (_selectedMark == value) return;
+                _selectedMark = value;
+                OnPropertyChanged(nameof(SelectedMark));
             }
-        } 
+        }
 
         #endregion
 
         #region command
-
+//manipulation with marks
         private RelayCommand _addMarkCommnad;
         public RelayCommand AddMarkCommnad
         {
@@ -72,8 +84,8 @@ namespace projectX.ViewModel
                        (_addMarkCommnad = new RelayCommand(obj =>
                            {
                                NewCase.Marks.Add(SelectedMark);
-                               SelectedMark = string.Empty;
-                           })
+                               SelectedMark = null;
+                           },obj =>  !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " "  && !_case.Marks.Contains(SelectedMark))
                        );
             }
         }
@@ -86,18 +98,16 @@ namespace projectX.ViewModel
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
                            {
-                               if (NewCase.Marks.Contains(SelectedMark))
-                               {
-                                   NewCase.Marks.Remove(SelectedMark);
-                                   SelectedMark = string.Empty;
-                               }
-                           })
+                               if (!NewCase.Marks.Contains(SelectedMark)) return;
+                               NewCase.Marks.Remove(SelectedMark);
+                               SelectedMark = null;
+                           },obj => !string.IsNullOrEmpty(SelectedMark) && _case.Marks.Contains(SelectedMark))
                        );
             }
         }
- 
 
 
+//manipulation with img
         private RelayCommand _addImgCommand;
         public RelayCommand AddImgCommand
         {
@@ -107,7 +117,23 @@ namespace projectX.ViewModel
                        (_addImgCommand = new RelayCommand(obj =>
                        {
                            NewCase.ImgSrc.Add(@"resources/Chrysanthemum.jpg");
+                           NewCase.ImgSrc.Add(@"G:/nuw4Tp80cqs.jpg");
                        }));
+            }
+        }
+
+        private RelayCommand _deleteImgCommnad;
+        public RelayCommand DeleteImgCommnad
+        {
+            get
+            {
+                return _deleteImgCommnad ??
+                       (_deleteImgCommnad = new RelayCommand(obj =>
+                           {
+                               NewCase.ImgSrc.Remove(SelectedImg);
+                               SelectedImg = null;
+                           }, obj => !string.IsNullOrEmpty(SelectedImg))
+                       );
             }
         }
 

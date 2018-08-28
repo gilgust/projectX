@@ -37,6 +37,19 @@
 					</ListBox.ItemTemplate>
 				</ListBox>
 
+				<TextBlock Text="Img"/>
+				<ListBox ItemsSource="{Binding ImgSrc}" SelectedItem="{Binding SelectedImg}">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Image Source="{Binding}" Width="40" Height="40"/>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
 			</StackPanel>
 		</ScrollViewer>
 	</Grid>
