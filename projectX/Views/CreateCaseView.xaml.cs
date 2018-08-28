@@ -29,5 +29,18 @@ namespace projectX.Views
             InitializeComponent();
             this.DataContext = new CreateCaseViewModel(cases, new DefaultDialogService());
         }
+
+        private void add_mark(object sender, RoutedEventArgs e)
+        {
+            var VM = DataContext as CreateCaseViewModel;
+            //VM.NewCase.Marks.Add(TextBoxNewMark.Text);
+          //  TextBoxNewMark.Text = string.Empty;
+        }
+
+        private void Delete_Mark(object sender, RoutedEventArgs e)
+        {
+            var VM = DataContext as CreateCaseViewModel;
+        //    VM.NewCase.Marks.Remove(TextBoxNewMark.Text);
+        }
     }
 }

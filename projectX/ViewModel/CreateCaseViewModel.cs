@@ -72,7 +72,7 @@ namespace projectX.ViewModel
                        (_addMarkCommnad = new RelayCommand(obj =>
                            {
                                NewCase.Marks.Add(SelectedMark);
-                               SelectedMark = null;
+                               SelectedMark = string.Empty;
                            })
                        );
             }
@@ -86,12 +86,17 @@ namespace projectX.ViewModel
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
                            {
-                               NewCase.Marks.Remove(SelectedMark);
-                               SelectedMark = null;
+                               if (NewCase.Marks.Contains(SelectedMark))
+                               {
+                                   NewCase.Marks.Remove(SelectedMark);
+                                   SelectedMark = string.Empty;
+                               }
                            })
                        );
             }
         }
+ 
+
 
         private RelayCommand _addImgCommand;
         public RelayCommand AddImgCommand

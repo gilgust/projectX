@@ -18,6 +18,7 @@
 				<TextBlock Text="Описание"/>
 				<TextBox Text="{Binding Path=NewCase.Description}" TextWrapping="Wrap"/>
 
+				<TextBlock Text="Теги"/>
 				<ListBox ItemsSource="{Binding Path=NewCase.Marks}" SelectedItem="{Binding SelectedMark}" >  
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
@@ -38,10 +39,10 @@
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
-				<TextBox Text="{Binding SelectedMark, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Text="{Binding SelectedMark, UpdateSourceTrigger=PropertyChanged}"/> 
 				<StackPanel Orientation="Horizontal"> 
 					<Button Content="Add mark" Command="{Binding Path=AddMarkCommnad}"/>
-					<Button Content="delete mark" Command="{Binding Path=DeleteCaseCommand}" CommandParameter="{Binding SelectedMark}"/>
+					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding SelectedMark}"/> 
 				</StackPanel>
 			</StackPanel>
 		</ScrollViewer>
