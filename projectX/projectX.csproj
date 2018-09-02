@@ -68,6 +68,7 @@
     <Compile Include="services\initFolders.cs" />
     <Compile Include="ViewModel\CasesViewModel.cs" />
     <Compile Include="ViewModel\CreateCaseViewModel.cs" />
+    <Compile Include="ViewModel\EditCaseViewModel.cs" />
     <Compile Include="Views\CaseInfoView.xaml.cs">
       <DependentUpon>CaseInfoView.xaml</DependentUpon>
     </Compile>

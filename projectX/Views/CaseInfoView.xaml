@@ -35,7 +35,7 @@
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
-				</ListBox>
+				</ListBox> 
 
 				<TextBlock Text="Img"/>
 				<ListBox ItemsSource="{Binding ImgSrc}" SelectedItem="{Binding SelectedImg}">

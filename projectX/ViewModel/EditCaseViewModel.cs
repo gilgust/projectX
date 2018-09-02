@@ -9,48 +9,67 @@ using System.Threading.Tasks;
 using projectX.Annotations;
 using projectX.domain;
 using projectX.services;
-
 namespace projectX.ViewModel
 {
-    public class CreateCaseViewModel : INotifyPropertyChanged, IDisposable
+    public class EditCaseViewModel : INotifyPropertyChanged
     {
-        private Case _case;
+        private Case _originalCase;
+        private Case _cloneCase;
+        private bool _wasChange;
+
         private readonly ObservableCollection<Case> _cases;
         private readonly IDialogService _dialogService;
+
         private string _selectedMark;
         private string _selectedImg;
-
-        public CreateCaseViewModel(ObservableCollection<Case> cases, IDialogService dialogService)
+         
+        public EditCaseViewModel(ObservableCollection<Case> cases, IDialogService dialogService)
         {
+            _dialogService = dialogService;
+            _cases = cases;
+
             _selectedMark = null;
             _selectedImg = null;
 
-            _dialogService = dialogService;
-            _cases = cases;
-            
-            _case = new Case {Name = "", Description = ""};
-
-            _case.PropertyChanged += Case_propertyChanged;
+            _wasChange = false;
+            _originalCase = new Case();
+            _cloneCase = (Case)_originalCase.Clone(); 
         }
-
-        private void Case_propertyChanged(object sender, PropertyChangedEventArgs e) => OnPropertyChanged(e.PropertyName);
-        public void Dispose() => _case.PropertyChanged -= Case_propertyChanged;
 
         #region prop
-
-        public Case NewCase
+        
+        public ObservableCollection<string> ImgSrc
         {
-            get => _case;
+            get => CloneCase.ImgSrc;
             set
             {
-                if (_case == value) return;
-                _case.PropertyChanged -= Case_propertyChanged;
-                _case = value;
-                OnPropertyChanged(nameof(NewCase));
-                _case.PropertyChanged += Case_propertyChanged;
+                CloneCase.ImgSrc = value;
+                _wasChange = true;
+            } 
+        }
+
+        public Case TargetCase
+        {
+            get => _originalCase;
+            set
+            {
+                if (_originalCase == value || value == null) return;
+                _originalCase = value;
+                CloneCase = (Case)value.Clone();
+                OnPropertyChanged(nameof(TargetCase));
             }
         }
-         
+
+        public Case CloneCase
+        {
+            get => _cloneCase;
+            set
+            {
+                if(_cloneCase == value) return;
+                _cloneCase = value;
+                OnPropertyChanged(nameof(CloneCase));
+            }
+        }
 
         public string SelectedMark
         {
@@ -68,7 +87,7 @@ namespace projectX.ViewModel
             get => _selectedImg;
             set
             {
-                if(_selectedImg == value) return;
+                if (_selectedImg == value) return;
                 _selectedImg = value;
                 OnPropertyChanged(nameof(SelectedImg));
             }
@@ -77,7 +96,7 @@ namespace projectX.ViewModel
         #endregion
 
         #region command
-        //manipulation with marks
+//manipulation with marks
         private RelayCommand _addMarkCommnad;
         public RelayCommand AddMarkCommnad
         {
@@ -85,10 +104,11 @@ namespace projectX.ViewModel
             {
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
-                           {
-                               NewCase.Marks.Add(SelectedMark);
-                               SelectedMark = null;
-                           }, obj => !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " " && !_case.Marks.Contains(SelectedMark))
+                       {
+                           CloneCase.Marks.Add(SelectedMark);
+                           SelectedMark = null;
+                           _wasChange = true;
+                       }, obj => !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " " && !CloneCase.Marks.Contains(SelectedMark))
                        );
             }
         }
@@ -100,17 +120,18 @@ namespace projectX.ViewModel
             {
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
-                           {
-                               if (!NewCase.Marks.Contains(SelectedMark)) return;
-                               NewCase.Marks.Remove(SelectedMark);
-                               SelectedMark = null;
-                           }, obj => !string.IsNullOrEmpty(SelectedMark) && _case.Marks.Contains(SelectedMark))
+                       {
+                           if (!CloneCase.Marks.Contains(SelectedMark)) return;
+                           CloneCase.Marks.Remove(SelectedMark);
+                           SelectedMark = null;
+                           _wasChange = true;
+                       }, obj => !string.IsNullOrEmpty(SelectedMark) && CloneCase.Marks.Contains(SelectedMark))
                        );
             }
-        } 
+        }
 
 
-        //manipulation with img
+//manipulation with img
         private RelayCommand _addImgCommand;
         public RelayCommand AddImgCommand
         {
@@ -118,9 +139,10 @@ namespace projectX.ViewModel
             {
                 return _addImgCommand ??
                        (_addImgCommand = new RelayCommand(obj =>
-                       { 
+                       {
                            _dialogService.OpenFileDialog();
-                           NewCase.ImgSrc.Add(_dialogService.FilePath);
+                           CloneCase.ImgSrc.Add(_dialogService.FilePath);
+                           _wasChange = true;
                        }));
             }
         }
@@ -133,12 +155,14 @@ namespace projectX.ViewModel
                 return _deleteImgCommnad ??
                        (_deleteImgCommnad = new RelayCommand(obj =>
                        {
-                           NewCase.ImgSrc.Remove(SelectedImg);
+                           CloneCase.ImgSrc.Remove(SelectedImg);
                            SelectedImg = null;
-                       }, obj => NewCase.ImgSrc.Count >0 && SelectedImg != null));
+                           _wasChange = true;
+                       }, obj => CloneCase.ImgSrc.Count > 0 && SelectedImg != null));
             }
         }
 
+//save
         private RelayCommand _saveCaseCommand;
         public RelayCommand SaveCaseCommnad
         {
@@ -147,9 +171,10 @@ namespace projectX.ViewModel
                 return _saveCaseCommand ??
                        (_saveCaseCommand = new RelayCommand(obj =>
                            {
-                               _cases.Add(_case);
-                               NewCase = new Case {Name = "", Description = ""}; 
-                           })
+                               var idOriginalCase = _cases.IndexOf(_originalCase);
+                               _cases[idOriginalCase] = CloneCase;
+                               _wasChange = false;
+                           }, x=> _wasChange)
                        );
             }
         }

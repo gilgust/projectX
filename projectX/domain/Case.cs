@@ -10,7 +10,7 @@ using projectX.Annotations;
 
 namespace projectX.domain
 {
-    public class Case : INotifyPropertyChanged
+    public class Case : INotifyPropertyChanged, ICloneable
     {
         private string _name;
         private string _description;
@@ -20,7 +20,7 @@ namespace projectX.domain
         public Case()
         {
             Proects = new List<Proect>();
-            Marks = new ObservableCollection<string>();
+            Marks = new ObservableCollection<string>(); 
             ImgSrc = new ObservableCollection<string>();
         }
 
@@ -50,8 +50,7 @@ namespace projectX.domain
 
         public List<Proect> Proects { get; set; }
 
-        public ObservableCollection<string> Marks { get; set; }
-
+        public ObservableCollection<string> Marks { get; set; }  
         public ObservableCollection<string> ImgSrc { get; set; }
 
         #endregion
@@ -64,6 +63,11 @@ namespace projectX.domain
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
         }
     }
 }

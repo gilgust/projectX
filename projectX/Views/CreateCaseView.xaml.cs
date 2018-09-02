@@ -28,23 +28,6 @@ namespace projectX.Views
         {
             InitializeComponent();
             this.DataContext = new CreateCaseViewModel(cases, new DefaultDialogService());
-        }
-
-        private void add_mark(object sender, RoutedEventArgs e)
-        { 
-        }
-
-        private void Delete_Mark(object sender, RoutedEventArgs e)
-        { 
-        }
-
-        private void Add_Img(object sender, RoutedEventArgs e)
-        {
-            var cont = DataContext as CreateCaseViewModel;
-            var imjList = cont.NewCase.ImgSrc;
-            imjList.Add(@"G:/nuw4Tp80cqs.jpg");
-            var markList = cont.NewCase.Marks;
-            markList.Add("111111");
-        }
+        } 
     }
 }

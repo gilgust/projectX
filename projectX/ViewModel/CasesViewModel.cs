@@ -24,11 +24,11 @@ namespace projectX.ViewModel
         //ctor
         public CasesViewModel(ObservableCollection<Case> cases)
         {
-            Cases = cases;
+            Cases = cases; 
             _caseInfoView = new CaseInfoView();
-            _editCaseView = new EditCaseView();
+            _editCaseView = new EditCaseView(cases);
             _createCaseView = new CreateCaseView(cases);
-
+            
             _currentView = null;
         }
 
@@ -57,7 +57,7 @@ namespace projectX.ViewModel
                     OnPropertyChanged(nameof(CurrentView));
                 }
             }
-        }
+        } 
 
         #endregion
 
@@ -80,7 +80,12 @@ namespace projectX.ViewModel
             get
             {
                 return _editCaseCommand ??
-                       (_editCaseCommand = new RelayCommand(obj => { CurrentView = _editCaseView; }));
+                       (_editCaseCommand = new RelayCommand(obj =>
+                           {
+                               CurrentView = _editCaseView;
+                               ((EditCaseView) _editCaseView).TargetCase = SelectedCase;
+                           },
+                           obj => SelectedCase != null));
             }
         }
 
@@ -91,10 +96,10 @@ namespace projectX.ViewModel
             {
                 return _createCaseCommand ??
                        (_createCaseCommand = new RelayCommand(obj =>
-                       {
-                           SelectedCase = null;
-                           CurrentView = _createCaseView;
-                       }));
+                           {
+                               SelectedCase = null;
+                               CurrentView = _createCaseView;
+                           }));
             }
         }
 

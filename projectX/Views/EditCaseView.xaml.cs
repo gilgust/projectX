@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using projectX.domain;
+using projectX.services;
+using projectX.ViewModel;
 
 namespace projectX.Views
 {
@@ -20,9 +24,23 @@ namespace projectX.Views
     /// </summary>
     public partial class EditCaseView : UserControl
     {
-        public EditCaseView()
+        private Case _targetCase;
+        private EditCaseViewModel VM;
+        public EditCaseView(ObservableCollection<Case> cases)
         {
             InitializeComponent();
+            VM = new EditCaseViewModel(cases, new DefaultDialogService());
+            DataContext = VM;
+        }
+
+        public Case TargetCase
+        {
+            set
+            {
+                if(_targetCase != null && _targetCase == value) return;
+                _targetCase = value;
+                VM.TargetCase = _targetCase;
+            }
         }
     }
 }
