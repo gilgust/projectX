@@ -12,6 +12,7 @@ namespace projectX.domain
 {
     public class Case : INotifyPropertyChanged, ICloneable
     {
+        //private int _id;
         private string _name;
         private string _description;
 
@@ -26,6 +27,18 @@ namespace projectX.domain
 
 
         #region property
+
+        //public int ID
+        //{
+        //    get => _id;
+        //    set
+        //    {
+        //        if(_id == value) return;
+        //        _id = value;
+        //        OnPropertyChanged(nameof(ID));
+        //    }
+        //}
+
         public string Name
         {
             get => _name;
