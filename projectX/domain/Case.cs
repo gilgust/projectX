@@ -12,7 +12,6 @@ namespace projectX.domain
 {
     public class Case : INotifyPropertyChanged, ICloneable
     {
-        //private int _id;
         private string _name;
         private string _description;
 
@@ -20,6 +19,8 @@ namespace projectX.domain
         //ctor
         public Case()
         {
+            Id = Guid.NewGuid().GetHashCode();
+
             Proects = new List<Proect>();
             Marks = new ObservableCollection<string>(); 
             ImgSrc = new ObservableCollection<string>();
@@ -28,16 +29,7 @@ namespace projectX.domain
 
         #region property
 
-        //public int ID
-        //{
-        //    get => _id;
-        //    set
-        //    {
-        //        if(_id == value) return;
-        //        _id = value;
-        //        OnPropertyChanged(nameof(ID));
-        //    }
-        //}
+        public int Id { get; }
 
         public string Name
         {

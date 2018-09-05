@@ -5,8 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:projectX"
         xmlns:views="clr-namespace:projectX.Views"
+        xmlns:vm="clr-namespace:projectX.ViewModel"
         mc:Ignorable="d"
         Title="CasesWindow" Height="400" Width="600">
+
 	<Window.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="FontSize" Value="14"/>
@@ -23,10 +25,15 @@
 			<views:CaseInfoView/>
 		</DataTemplate>
 		<DataTemplate DataType="{x:Type views:EditCaseView}">
-			<views:EditCaseView/>
+			<!--<views:EditCaseView/>-->
 		</DataTemplate>
 
 	</Window.Resources>
+
+	<Window.DataContext>
+		<vm:CasesViewModel/>
+	</Window.DataContext>
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/> 
@@ -37,15 +44,15 @@
 			<RowDefinition Height="35"/>
 		</Grid.RowDefinitions>
 
-		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Cases}" SelectedItem="{Binding SelectedCase}">
+		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Cases.Cases}" SelectedItem="{Binding Path=SelectedCase}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock FontSize="18" Text="{Binding Path=Name}"/>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
-		</ListBox>
+		</ListBox> 
 
-		<ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding CurrentView}"/>
+		<ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding Path=CurrentView}"/>
 
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"> 
 			<Button Content="Edit" Command="{Binding Path=EditCaseCommand}"/>

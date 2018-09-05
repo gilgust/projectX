@@ -4,20 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:projectX.Views"
+             xmlns:vm="clr-namespace:projectX.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+	<!--<UserControl.DataContext>
+		<vm:EditCaseViewModel/>
+	</UserControl.DataContext>-->
+
     <Grid Background="AliceBlue">
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
 			<StackPanel >
 
 				<TextBlock Text="Редактирование" Margin="10"/>
-				<Button Command="{Binding SaveCaseCommnad}" Content="Save"/>
+				<Button Command="{Binding Path=SaveCaseCommnad}" Content="Save"/>
 				<TextBlock Text="Имя"/>
-				<TextBox Text="{Binding Path=CloneCase.Name}"/>
+				<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" />
 				<TextBlock Text="Описание"/>
-				<TextBox Text="{Binding Path=CloneCase.Description}" TextWrapping="Wrap"/>
+				<TextBox Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
 
-				<ListBox ItemsSource="{Binding Path=CloneCase.Marks}" SelectedItem="{Binding SelectedMark}" >
+				<ListBox ItemsSource="{Binding Path=Marks}" SelectedItem="{Binding Path=SelectedMark}" >
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -37,15 +42,15 @@
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
-				<TextBox Text="{Binding SelectedMark, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Text="{Binding Path=SelectedMark , UpdateSourceTrigger=PropertyChanged}"/>
 
 				<StackPanel Orientation="Horizontal"> 
 					<Button Content="Add mark" Command="{Binding Path=AddMarkCommnad}"/>
-					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding SelectedMark}"/> 
+					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding Path=SelectedMark}"/> 
 				</StackPanel>
 
 				<TextBlock Text="Img"/>
-				<ListBox ItemsSource="{Binding Path=CloneCase.ImgSrc}" SelectedItem="{Binding SelectedImg}">
+				<ListBox ItemsSource="{Binding Path=ImgSrc}" SelectedItem="{Binding Path=SelectedImg}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal"/>

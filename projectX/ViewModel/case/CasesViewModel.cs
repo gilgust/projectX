@@ -7,33 +7,38 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using projectX.Annotations;
 using projectX.domain;
+using projectX.Data;
+using projectX.Data.interfaces;
 using projectX.Views;
 
 namespace projectX.ViewModel
 {
-    class CasesViewModel : INotifyPropertyChanged
+    public class CasesViewModel : INotifyPropertyChanged
     {
         private Case _selectedCase;
-        private object _currentView;
-        private readonly object _caseInfoView;
-        private readonly object _editCaseView;
-        private readonly object _createCaseView;
+        private UserControl _currentView;
+        private  UserControl _caseInfoView;
+        private  UserControl _editCaseView;
+        private readonly UserControl _createCaseView;
 
         //ctor
-        public CasesViewModel(ObservableCollection<Case> cases)
-        {
-            Cases = cases; 
-            _caseInfoView = new CaseInfoView();
-            _editCaseView = new EditCaseView(cases);
-            _createCaseView = new CreateCaseView(cases);
-            
-            _currentView = null;
-        }
 
-        #region property
-        public ObservableCollection<Case> Cases { get; set; }
+        public CasesViewModel()
+        {
+            Cases = DataFromCollections.Instance;
+            _caseInfoView = null;
+            _editCaseView = new EditCaseView();
+            _createCaseView = new CreateCaseView() { DataContext = new CreateCaseViewModel() };
+
+            _currentView = null;
+        } 
+
+        #region property 
+
+        public ICaseCrud Cases { get; }
 
         public Case SelectedCase
         {
@@ -42,20 +47,24 @@ namespace projectX.ViewModel
             {
                 if (_selectedCase == value) return;
                 _selectedCase = value;
+                
+                if(_caseInfoView == null)
+                    _caseInfoView = new CaseInfoView() { DataContext = new CaseViewModel() }; 
+                ((CaseViewModel)_caseInfoView.DataContext).Case = value;
+
+
                 OnPropertyChanged(nameof(SelectedCase));
                 ShowCaseInfoCommand.Execute(null);
             }
         }
 
-        public object CurrentView {
+        public UserControl CurrentView {
             get => _currentView;
             set
             {
-                if (_currentView != value)
-                {
-                    _currentView = value;
-                    OnPropertyChanged(nameof(CurrentView));
-                }
+                if (ReferenceEquals(_currentView, value)) return;
+                _currentView = value;
+                OnPropertyChanged(nameof(CurrentView));
             }
         } 
 
@@ -69,7 +78,11 @@ namespace projectX.ViewModel
             get
             {
                 return _showCaseInfoCommand ??
-                       (_showCaseInfoCommand = new RelayCommand(obj => { CurrentView = _caseInfoView; }));
+                       (_showCaseInfoCommand = new RelayCommand(obj =>
+                       {
+                           if(SelectedCase!= null)
+                               CurrentView = _caseInfoView;
+                       }));
             }
         }
 
@@ -82,8 +95,10 @@ namespace projectX.ViewModel
                 return _editCaseCommand ??
                        (_editCaseCommand = new RelayCommand(obj =>
                            {
+
+                               _editCaseView.DataContext = new EditCaseViewModel(SelectedCase);
+
                                CurrentView = _editCaseView;
-                               ((EditCaseView) _editCaseView).TargetCase = SelectedCase;
                            },
                            obj => SelectedCase != null));
             }
@@ -111,7 +126,7 @@ namespace projectX.ViewModel
                 return _deleteCaseCommand ??
                        (_deleteCaseCommand = new RelayCommand(obj =>
                            {
-                               Cases.Remove(SelectedCase);
+                               Cases.RemoveCace(SelectedCase);
                                CurrentView = null;
                            },
                            obj => SelectedCase != null));

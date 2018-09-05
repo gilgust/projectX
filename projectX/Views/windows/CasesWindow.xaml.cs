@@ -11,23 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using projectX.domain;
-using projectX.services;
 using projectX.ViewModel;
 
-namespace projectX.Views
+namespace projectX
 {
     /// <summary>
-    /// Interaction logic for CreateCaseView.xaml
+    /// Interaction logic for CasesWindow.xaml
     /// </summary>
-    public partial class CreateCaseView : UserControl
+    public partial class CasesWindow : Window
     {
-        public CreateCaseView(ObservableCollection<Case> cases)
+
+        public CasesWindow()
         {
             InitializeComponent();
-            this.DataContext = new CreateCaseViewModel(cases, new DefaultDialogService());
         } 
     }
 }

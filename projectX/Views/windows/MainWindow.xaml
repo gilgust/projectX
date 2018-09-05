@@ -4,17 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:projectX"
+        xmlns:vm="clr-namespace:projectX.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="200" Width="300"
-		ResizeMode="NoResize"
-		Loaded="Window_Loaded"
+		ResizeMode="NoResize" 
 		>
+	<Window.DataContext>
+		<vm:AppViewModel/>
+	</Window.DataContext>
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
 		<Button Grid.Row="0">Projects</Button>
-		<Button Grid.Row="1" Click="Button_Click">Cases</Button>
+		<Button Grid.Row="1" Command="{Binding Path=ShowCasesCommand}">Cases</Button>
     </Grid>
 </Window>

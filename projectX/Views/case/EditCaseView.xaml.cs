@@ -23,24 +23,10 @@ namespace projectX.Views
     /// Interaction logic for EditCaseView.xaml
     /// </summary>
     public partial class EditCaseView : UserControl
-    {
-        private Case _targetCase;
-        private EditCaseViewModel VM;
-        public EditCaseView(ObservableCollection<Case> cases)
+    { 
+        public EditCaseView() 
         {
-            InitializeComponent();
-            VM = new EditCaseViewModel(cases, new DefaultDialogService());
-            DataContext = VM;
-        }
-
-        public Case TargetCase
-        {
-            set
-            {
-                if(_targetCase != null && _targetCase == value) return;
-                _targetCase = value;
-                VM.TargetCase = _targetCase;
-            }
-        }
+            InitializeComponent(); 
+        } 
     }
 }

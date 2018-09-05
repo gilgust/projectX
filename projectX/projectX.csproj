@@ -61,7 +61,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="models\DomainColections.cs" />
+    <Compile Include="Data\DataFromCollections.cs" />
+    <Compile Include="Data\interfaces\ICaseCrud.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="resources\Resource1.Designer.cs">
@@ -73,23 +74,25 @@
     <Compile Include="services\IDialogService.cs" />
     <Compile Include="services\IFileService.cs" />
     <Compile Include="services\initFolders.cs" />
-    <Compile Include="ViewModel\CasesViewModel.cs" />
-    <Compile Include="ViewModel\CreateCaseViewModel.cs" />
-    <Compile Include="ViewModel\EditCaseViewModel.cs" />
-    <Compile Include="Views\CaseInfoView.xaml.cs">
+    <Compile Include="ViewModel\AppViewModel.cs" />
+    <Compile Include="ViewModel\case\CasesViewModel.cs" />
+    <Compile Include="ViewModel\case\CaseViewModel.cs" />
+    <Compile Include="ViewModel\case\CreateCaseViewModel.cs" />
+    <Compile Include="ViewModel\case\EditCaseViewModel.cs" />
+    <Compile Include="Views\case\CaseInfoView.xaml.cs">
       <DependentUpon>CaseInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateCaseView.xaml.cs">
+    <Compile Include="Views\case\CreateCaseView.xaml.cs">
       <DependentUpon>CreateCaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\EditCaseView.xaml.cs">
+    <Compile Include="Views\case\EditCaseView.xaml.cs">
       <DependentUpon>EditCaseView.xaml</DependentUpon>
     </Compile>
-    <Page Include="CasesWindow.xaml">
+    <Page Include="Views\windows\CasesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -97,24 +100,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CasesWindow.xaml.cs">
+    <Compile Include="Views\windows\CasesWindow.xaml.cs">
       <DependentUpon>CasesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="domain\Case.cs" />
     <Compile Include="domain\Proect.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\CaseInfoView.xaml">
+    <Page Include="Views\case\CaseInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateCaseView.xaml">
+    <Page Include="Views\case\CreateCaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EditCaseView.xaml">
+    <Page Include="Views\case\EditCaseView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +157,7 @@
     <Resource Include="resources\Chrysanthemum.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
+    <Folder Include="models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

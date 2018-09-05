@@ -4,19 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:projectX.Views"
+             xmlns:vm="clr-namespace:projectX.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+	<UserControl.DataContext>
+		<vm:CaseViewModel/>
+	</UserControl.DataContext>
+
+	<Grid>
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<StackPanel DataContext="{Binding SelectedCase}">
+			<StackPanel>
 
 				<TextBlock Text="Выбранный элемент"/>
 				<TextBlock Text="Имя"/>
-				<TextBlock Text="{Binding Path=Name}"/>
+				<TextBlock Text="{Binding Path=Case.Name}"/>
 				<TextBlock Text="Описание"/>
-				<TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
+				<TextBlock Text="{Binding Path=Case.Description}" TextWrapping="Wrap"/>
 
-				<ListBox ItemsSource="{Binding Path=Marks}" >
+				<ListBox ItemsSource="{Binding Path=Case.Marks}" SelectedItem="{Binding Path=SelectedMark}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -38,7 +43,7 @@
 				</ListBox> 
 
 				<TextBlock Text="Img"/>
-				<ListBox ItemsSource="{Binding ImgSrc}" SelectedItem="{Binding SelectedImg}">
+				<ListBox ItemsSource="{Binding Path=Case.ImgSrc}" SelectedItem="{Binding Path=SelectedImg}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
