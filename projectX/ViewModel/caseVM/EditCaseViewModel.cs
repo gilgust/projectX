@@ -58,7 +58,7 @@ namespace projectX.ViewModel
             set => _cloneCase.Description = value;
         }
 
-        public ObservableCollection<string> Marks
+        public List<string> Marks
         {
             get => _cloneCase.Marks;
             set
@@ -68,7 +68,7 @@ namespace projectX.ViewModel
             }
         }
 
-        public ObservableCollection<string> ImgSrc
+        public List<string> ImgSrc
         {
             get => _cloneCase.ImgSrc;
             set

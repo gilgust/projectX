@@ -26,6 +26,16 @@ namespace projectX
         public CasesWindow()
         {
             InitializeComponent();
-        } 
+            DataContext = new CasesViewModel();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            var a = ((CasesViewModel) DataContext).Cases.ToList();
+            if(a.Count>1)
+                MessageBox.Show(a[0].Name);
+            else
+                MessageBox.Show("данных нет");
+        }
     }
 }

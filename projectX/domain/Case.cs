@@ -22,8 +22,9 @@ namespace projectX.domain
             //Id = Guid.NewGuid().GetHashCode();
 
             //Proects = new ObservableCollection<Proect>();
-            Marks = new ObservableCollection<string>(); 
-            ImgSrc = new ObservableCollection<string>();
+            //Marks = new ObservableCollection<string>();
+            Marks = new List<string>();
+            ImgSrc = new List<string>();
         }
 
 
@@ -54,8 +55,10 @@ namespace projectX.domain
         }
 
         //public ObservableCollection<Proect> Proects { get; set; } 
-        public ObservableCollection<string> Marks { get; set; }  
-        public ObservableCollection<string> ImgSrc { get; set; }
+        //public ObservableCollection<string> Marks { get; set; }  
+        //public ObservableCollection<string> ImgSrc { get; set; }
+        public List<string> Marks { get; set; }  
+        public List<string> ImgSrc { get; set; }
 
         #endregion
 

@@ -12,10 +12,10 @@ namespace projectX.Data
 
         static ApplicationContext()
         {
-            Database.SetInitializer(new DB_Init());
+            Database.SetInitializer<ApplicationContext>(new DB_Init());
         }
 
-        public virtual DbSet<Case> Cases { get; set; }
-        public virtual DbSet<Proect> Proects{ get; set; }
+        public DbSet<Case> Cases { get; set; }
+        public DbSet<Proect> Proects{ get; set; }
     }
 }
