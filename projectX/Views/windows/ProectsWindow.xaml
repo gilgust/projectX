@@ -1,14 +1,12 @@
-﻿<Window x:Class="projectX.CasesWindow"
+﻿<Window x:Class="projectX.Views.windows.ProectsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:projectX"
-        xmlns:views="clr-namespace:projectX.Views"
-        xmlns:vm="clr-namespace:projectX.ViewModel"
+        xmlns:local="clr-namespace:projectX.Views.windows"
+        xmlns:vm="clr-namespace:projectX.ViewModel.proectVM"
         mc:Ignorable="d"
-        Title="CasesWindow" Height="400" Width="600">
-
+        Title="ProectsWindow" Height="400" Width="600">
 	<Window.Resources>
 		<Style TargetType="TextBlock">
 			<Setter Property="FontSize" Value="14"/>
@@ -20,23 +18,15 @@
 			<Setter Property="Width" Value="40"/>
 			<Setter Property="Margin" Value="5"/>
 		</Style>
-		
-		<!--<DataTemplate DataType="{x:Type views:CaseView}">
-			<views:CaseView/>
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type views:EditCaseView}">
-			--><!--<views:EditCaseView/>--><!--
-		</DataTemplate>-->
-
 	</Window.Resources>
-
+	
 	<Window.DataContext>
-		<vm:CasesViewModel/>
+		<vm:ProectsViewModel/>
 	</Window.DataContext>
 
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/> 
+			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="1.5*"/>
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
@@ -44,23 +34,22 @@
 			<RowDefinition Height="35"/>
 		</Grid.RowDefinitions>
 
-		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Cases.Cases}" SelectedItem="{Binding Path=SelectedCase}">
+		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Proects.Proects}" SelectedItem="{Binding Path=SelectedProect}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock FontSize="18" Text="{Binding Path=Name}"/>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
-		</ListBox> 
+		</ListBox>
 
 		<ContentControl Grid.Column="1" Grid.Row="0" Content="{Binding Path=CurrentView}"/>
 
-		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"> 
-			<Button Content="Edit" Command="{Binding Path=EditCaseCommand}"/>
-			<Button Content="Create" Command="{Binding Path=CreateCaseCommand}"/>
-			<Button Content="Delete" Command="{Binding Path=DeleteCaseCommand}"/>
+		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+			<Button Content="Edit" Command="{Binding Path=EditProectCommand}"/>
+			<Button Content="Create" Command="{Binding Path=CreateProectCommand}"/>
+			<Button Content="Delete" Command="{Binding Path=DeleteProecCommand}"/>
 
 		</StackPanel>
-		 
-	</Grid>
 
+	</Grid>
 </Window>

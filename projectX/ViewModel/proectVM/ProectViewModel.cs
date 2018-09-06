@@ -1,40 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using projectX.Annotations;
 using projectX.domain;
 
-namespace projectX.ViewModel
+namespace projectX.ViewModel.proectVM
 {
-    public class CaseViewModel : INotifyPropertyChanged
+    class ProectViewModel : INotifyPropertyChanged
     {
-        private Case _case; 
+        private Proect _proect;
 
         #region properties
-        public Case Case
+        public Proect Proect
         {
-            get => _case;
+            get => _proect;
             set
-            { 
-                if (_case == value) return;
+            {
+                if (_proect == value) return;
 
-                _case = value; 
-                OnPropertyChanged(nameof(Case));
+                _proect = value;
+                OnPropertyChanged(nameof(Proect));
             }
         }
-
-
-
-        private string _selectedMark; 
+        
+        private string _selectedMark;
         public string SelectedMark
         {
-            get => _selectedMark ;
+            get => _selectedMark;
             set
             {
                 if (_selectedMark == value) return;
@@ -43,21 +39,10 @@ namespace projectX.ViewModel
             }
         }
 
-        private string _selectedImg; 
-        public string SelectedImg
-        {
-            get => _selectedImg ;
-            set
-            {
-                if (_selectedImg == value) return;
-                _selectedImg = value;
-                OnPropertyChanged(nameof(SelectedImg));
-            }
-        }
         #endregion
 
 
-
+        #region prop
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -65,5 +50,6 @@ namespace projectX.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

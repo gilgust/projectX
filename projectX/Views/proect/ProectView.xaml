@@ -1,27 +1,26 @@
-﻿<UserControl x:Class="projectX.Views.CaseInfoView"
+﻿<UserControl x:Class="projectX.Views.proect.ProectView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:projectX.Views"
-             xmlns:vm="clr-namespace:projectX.ViewModel"
+             xmlns:local="clr-namespace:projectX.Views.proect"
+             xmlns:vm="clr-namespace:projectX.ViewModel.proectVM"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-	<UserControl.DataContext>
-		<vm:CaseViewModel/>
-	</UserControl.DataContext>
-
-	<Grid>
+	<!--<UserControl.DataContext>
+		<vm:ProectViewModel/>
+	</UserControl.DataContext>-->
+    <Grid>
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
 			<StackPanel>
 
-				<TextBlock Text="Выбранный элемент"/>
+				<TextBlock Text="Выбранный проект"/>
 				<TextBlock Text="Имя"/>
-				<TextBlock Text="{Binding Path=Case.Name}"/>
+				<TextBlock Text="{Binding Path=Proect.Name}"/>
 				<TextBlock Text="Описание"/>
-				<TextBlock Text="{Binding Path=Case.Description}" TextWrapping="Wrap"/>
+				<TextBlock Text="{Binding Path=Proect.Description}" TextWrapping="Wrap"/>
 
-				<ListBox ItemsSource="{Binding Path=Case.Marks}" SelectedItem="{Binding Path=SelectedMark}">
+				<ListBox ItemsSource="{Binding Path=Proect.Marks}" SelectedItem="{Binding Path=SelectedMark}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -38,20 +37,6 @@
 							<StackPanel>
 								<TextBlock Text="{Binding}" Margin="10 0 0 0"/>
 							</StackPanel>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox> 
-
-				<TextBlock Text="Img"/>
-				<ListBox ItemsSource="{Binding Path=Case.ImgSrc}" SelectedItem="{Binding Path=SelectedImg}">
-					<ListBox.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
-						</ItemsPanelTemplate>
-					</ListBox.ItemsPanel>
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<Image Source="{Binding}" Width="40" Height="40"/>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>

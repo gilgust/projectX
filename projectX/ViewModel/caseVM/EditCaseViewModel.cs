@@ -11,6 +11,7 @@ using projectX.domain;
 using projectX.Data;
 using projectX.Data.interfaces;
 using projectX.services;
+
 namespace projectX.ViewModel
 {
     public class EditCaseViewModel : INotifyPropertyChanged, IDisposable

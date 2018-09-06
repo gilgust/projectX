@@ -3,11 +3,11 @@
 namespace projectX.Views
 {
     /// <summary>
-    /// Interaction logic for CaseInfoView.xaml
+    /// Interaction logic for CaseView.xaml
     /// </summary>
-    public partial class CaseInfoView : UserControl
+    public partial class CaseView : UserControl
     {
-        public CaseInfoView()
+        public CaseView()
         { 
             InitializeComponent();
         }

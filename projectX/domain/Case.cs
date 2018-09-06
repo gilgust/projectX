@@ -19,9 +19,9 @@ namespace projectX.domain
         //ctor
         public Case()
         {
-            Id = Guid.NewGuid().GetHashCode();
+            //Id = Guid.NewGuid().GetHashCode();
 
-            Proects = new List<Proect>();
+            //Proects = new ObservableCollection<Proect>();
             Marks = new ObservableCollection<string>(); 
             ImgSrc = new ObservableCollection<string>();
         }
@@ -29,7 +29,7 @@ namespace projectX.domain
 
         #region property
 
-        public int Id { get; }
+        public int Id { get; set; }
 
         public string Name
         {
@@ -53,8 +53,7 @@ namespace projectX.domain
             }
         }
 
-        public List<Proect> Proects { get; set; }
-
+        //public ObservableCollection<Proect> Proects { get; set; } 
         public ObservableCollection<string> Marks { get; set; }  
         public ObservableCollection<string> ImgSrc { get; set; }
 

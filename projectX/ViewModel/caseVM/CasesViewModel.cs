@@ -20,7 +20,7 @@ namespace projectX.ViewModel
     {
         private Case _selectedCase;
         private UserControl _currentView;
-        private  UserControl _caseInfoView;
+        private  UserControl _caseView;
         private  UserControl _editCaseView;
         private readonly UserControl _createCaseView;
 
@@ -29,7 +29,7 @@ namespace projectX.ViewModel
         public CasesViewModel()
         {
             Cases = DataFromCollections.Instance;
-            _caseInfoView = null;
+            _caseView = null;
             _editCaseView = new EditCaseView();
             _createCaseView = new CreateCaseView() { DataContext = new CreateCaseViewModel() };
 
@@ -48,9 +48,9 @@ namespace projectX.ViewModel
                 if (_selectedCase == value) return;
                 _selectedCase = value;
                 
-                if(_caseInfoView == null)
-                    _caseInfoView = new CaseInfoView() { DataContext = new CaseViewModel() }; 
-                ((CaseViewModel)_caseInfoView.DataContext).Case = value;
+                if(_caseView == null)
+                    _caseView = new CaseView() { DataContext = new CaseViewModel() }; 
+                ((CaseViewModel)_caseView.DataContext).Case = value;
 
 
                 OnPropertyChanged(nameof(SelectedCase));
@@ -81,7 +81,7 @@ namespace projectX.ViewModel
                        (_showCaseInfoCommand = new RelayCommand(obj =>
                        {
                            if(SelectedCase!= null)
-                               CurrentView = _caseInfoView;
+                               CurrentView = _caseView;
                        }));
             }
         }

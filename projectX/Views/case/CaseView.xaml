@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="projectX.Views.CaseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:projectX.Views"
+             xmlns:vm="clr-namespace:projectX.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.DataContext>
+		<vm:CaseViewModel/>
+	</UserControl.DataContext>
+
+	<Grid>
+		<ScrollViewer VerticalScrollBarVisibility="Auto">
+			<StackPanel>
+
+				<TextBlock Text="Выбранный элемент"/>
+				<TextBlock Text="Имя"/>
+				<TextBlock Text="{Binding Path=Case.Name}"/>
+				<TextBlock Text="Описание"/>
+				<TextBlock Text="{Binding Path=Case.Description}" TextWrapping="Wrap"/>
+
+				<ListBox ItemsSource="{Binding Path=Case.Marks}" SelectedItem="{Binding Path=SelectedMark}">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
+									RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+							           ItemWidth="{Binding (ListView.View).ItemWidth,
+									RelativeSource={RelativeSource AncestorType=ListView}}"
+							           MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+							           ItemHeight="{Binding (ListView.View).ItemHeight, 
+						            RelativeSource={RelativeSource AncestorType=ListView}}"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<TextBlock Text="{Binding}" Margin="10 0 0 0"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox> 
+
+				<TextBlock Text="Img"/>
+				<ListBox ItemsSource="{Binding Path=Case.ImgSrc}" SelectedItem="{Binding Path=SelectedImg}">
+					<ListBox.ItemsPanel>
+						<ItemsPanelTemplate>
+							<StackPanel Orientation="Horizontal" CanHorizontallyScroll="True"/>
+						</ItemsPanelTemplate>
+					</ListBox.ItemsPanel>
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<Image Source="{Binding}" Width="40" Height="40"/>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</StackPanel>
+		</ScrollViewer>
+	</Grid>
+</UserControl>
