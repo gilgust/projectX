@@ -1,36 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using projectX.Annotations;
 using projectX.domain;
 
-namespace projectX.ViewModel.proectVM
+namespace projectX.ViewModel
 {
-    class ProectViewModel : INotifyPropertyChanged
+    public class CaseViewModel : INotifyPropertyChanged
     {
-        private Proect _proect;
+        private Case _case; 
 
         #region properties
-        public Proect Proect
+        public Case Case
         {
-            get => _proect;
+            get => _case;
             set
-            {
-                if (_proect == value) return;
+            { 
+                if (_case == value) return;
 
-                _proect = value;
-                OnPropertyChanged(nameof(Proect));
+                _case = value; 
+                OnPropertyChanged(nameof(Case));
             }
         }
-        
-        private string _selectedMark;
+
+
+
+        private string _selectedMark; 
         public string SelectedMark
         {
-            get => _selectedMark;
+            get => _selectedMark ;
             set
             {
                 if (_selectedMark == value) return;
@@ -39,10 +43,21 @@ namespace projectX.ViewModel.proectVM
             }
         }
 
+        private string _selectedImg; 
+        public string SelectedImg
+        {
+            get => _selectedImg ;
+            set
+            {
+                if (_selectedImg == value) return;
+                _selectedImg = value;
+                OnPropertyChanged(nameof(SelectedImg));
+            }
+        }
         #endregion
 
 
-        #region prop
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -50,6 +65,5 @@ namespace projectX.ViewModel.proectVM
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
     }
 }

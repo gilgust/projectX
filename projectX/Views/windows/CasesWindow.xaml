@@ -19,7 +19,19 @@
 		<Style TargetType="Button">
 			<Setter Property="Width" Value="40"/>
 			<Setter Property="Margin" Value="5"/>
+<<<<<<< HEAD
 		</Style> 
+=======
+		</Style>
+		
+		<DataTemplate DataType="{x:Type views:CaseInfoView}">
+			<views:CaseInfoView/>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type views:EditCaseView}">
+			<!--<views:EditCaseView/>-->
+		</DataTemplate>
+
+>>>>>>> parent of 9507b51... proect crud done
 	</Window.Resources>
 
 	<Grid>

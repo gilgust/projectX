@@ -19,18 +19,24 @@ namespace projectX.domain
         //ctor
         public Case()
         {
-            //Id = Guid.NewGuid().GetHashCode();
+            Id = Guid.NewGuid().GetHashCode();
 
+<<<<<<< HEAD
             //Proects = new ObservableCollection<Proect>();
             //Marks = new ObservableCollection<string>();
             Marks = new List<string>();
             ImgSrc = new List<string>();
+=======
+            Proects = new List<Proect>();
+            Marks = new ObservableCollection<string>(); 
+            ImgSrc = new ObservableCollection<string>();
+>>>>>>> parent of 9507b51... proect crud done
         }
 
 
         #region property
 
-        public int Id { get; set; }
+        public int Id { get; }
 
         public string Name
         {
@@ -54,11 +60,18 @@ namespace projectX.domain
             }
         }
 
+<<<<<<< HEAD
         //public ObservableCollection<Proect> Proects { get; set; } 
         //public ObservableCollection<string> Marks { get; set; }  
         //public ObservableCollection<string> ImgSrc { get; set; }
         public List<string> Marks { get; set; }  
         public List<string> ImgSrc { get; set; }
+=======
+        public List<Proect> Proects { get; set; }
+
+        public ObservableCollection<string> Marks { get; set; }  
+        public ObservableCollection<string> ImgSrc { get; set; }
+>>>>>>> parent of 9507b51... proect crud done
 
         #endregion
 

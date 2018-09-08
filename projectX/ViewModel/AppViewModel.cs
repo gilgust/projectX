@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using projectX.domain;
-using projectX.ViewModel.proectVM;
-using projectX.Views.windows;
 
 namespace projectX.ViewModel
 {
@@ -25,22 +23,6 @@ namespace projectX.ViewModel
                            {
                                CasesWindow cw = new CasesWindow(){DataContext = new CasesViewModel()};
                                cw.Show(); 
-                           })
-                       );
-            }
-        }
-
-        private RelayCommand _showProectsCommand;
-
-        public RelayCommand ShowProectsCommand
-        {
-            get
-            {
-                return _showProectsCommand ??
-                       (_showProectsCommand = new RelayCommand(obj =>
-                           {
-                               ProectsWindow cw = new ProectsWindow() { DataContext = new ProectsViewModel() };
-                               cw.Show();
                            })
                        );
             }

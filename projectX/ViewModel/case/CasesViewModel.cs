@@ -23,17 +23,28 @@ namespace projectX.ViewModel
         private IEnumerable<Case> _cases;
         private Case _selectedCase;
         private UserControl _currentView;
+<<<<<<< HEAD:projectX/ViewModel/caseVM/CasesViewModel.cs
         private UserControl _caseView;
         private UserControl _editCaseView;
+=======
+        private  UserControl _caseInfoView;
+        private  UserControl _editCaseView;
+>>>>>>> parent of 9507b51... proect crud done:projectX/ViewModel/case/CasesViewModel.cs
         private readonly UserControl _createCaseView;
 
         //ctor
         public CasesViewModel()
+<<<<<<< HEAD:projectX/ViewModel/caseVM/CasesViewModel.cs
         { 
             db = new ApplicationContext();
             Cases = db.Cases.Local;
 
             _caseView = null;
+=======
+        {
+            Cases = DataFromCollections.Instance;
+            _caseInfoView = null;
+>>>>>>> parent of 9507b51... proect crud done:projectX/ViewModel/case/CasesViewModel.cs
             _editCaseView = new EditCaseView();
             _createCaseView = new CreateCaseView() { DataContext = new CreateCaseViewModel() };
 
@@ -47,8 +58,21 @@ namespace projectX.ViewModel
             get => _cases;
             set
             {
+<<<<<<< HEAD:projectX/ViewModel/caseVM/CasesViewModel.cs
                 _cases = value;
                 OnPropertyChanged(nameof(Cases));
+=======
+                if (_selectedCase == value) return;
+                _selectedCase = value;
+                
+                if(_caseInfoView == null)
+                    _caseInfoView = new CaseInfoView() { DataContext = new CaseViewModel() }; 
+                ((CaseViewModel)_caseInfoView.DataContext).Case = value;
+
+
+                OnPropertyChanged(nameof(SelectedCase));
+                ShowCaseInfoCommand.Execute(null);
+>>>>>>> parent of 9507b51... proect crud done:projectX/ViewModel/case/CasesViewModel.cs
             }
         }
 
@@ -82,6 +106,7 @@ namespace projectX.ViewModel
 
         #endregion
 
+<<<<<<< HEAD:projectX/ViewModel/caseVM/CasesViewModel.cs
         //#region commands
         ////show CaseInfo
         //private RelayCommand _showCaseInfoCommand;
@@ -145,6 +170,71 @@ namespace projectX.ViewModel
         //    }
         //}
         //#endregion
+=======
+        #region commands
+        //show CaseInfo
+        private RelayCommand _showCaseInfoCommand;
+        public RelayCommand ShowCaseInfoCommand
+        {
+            get
+            {
+                return _showCaseInfoCommand ??
+                       (_showCaseInfoCommand = new RelayCommand(obj =>
+                       {
+                           if(SelectedCase!= null)
+                               CurrentView = _caseInfoView;
+                       }));
+            }
+        }
+
+        //show CaseInfo
+        private RelayCommand _editCaseCommand;
+        public RelayCommand EditCaseCommand
+        {
+            get
+            {
+                return _editCaseCommand ??
+                       (_editCaseCommand = new RelayCommand(obj =>
+                           {
+
+                               _editCaseView.DataContext = new EditCaseViewModel(SelectedCase);
+
+                               CurrentView = _editCaseView;
+                           },
+                           obj => SelectedCase != null));
+            }
+        }
+
+        private RelayCommand _createCaseCommand; 
+        public RelayCommand CreateCaseCommand
+        {
+            get
+            {
+                return _createCaseCommand ??
+                       (_createCaseCommand = new RelayCommand(obj =>
+                           {
+                               SelectedCase = null;
+                               CurrentView = _createCaseView;
+                           }));
+            }
+        }
+
+        private RelayCommand _deleteCaseCommand;
+        public RelayCommand DeleteCaseCommand
+        {
+            get
+            {
+                return _deleteCaseCommand ??
+                       (_deleteCaseCommand = new RelayCommand(obj =>
+                           {
+                               Cases.RemoveCace(SelectedCase);
+                               CurrentView = null;
+                           },
+                           obj => SelectedCase != null));
+            }
+        }
+        #endregion
+>>>>>>> parent of 9507b51... proect crud done:projectX/ViewModel/case/CasesViewModel.cs
 
 
         public event PropertyChangedEventHandler PropertyChanged;

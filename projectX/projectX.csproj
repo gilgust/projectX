@@ -43,8 +43,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,10 +61,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Data\ApplicationContext.cs" />
     <Compile Include="Data\DataFromCollections.cs" />
-    <Compile Include="Data\DB_Init.cs" />
     <Compile Include="Data\interfaces\ICaseCrud.cs" />
+<<<<<<< HEAD
     <Compile Include="Data\interfaces\IProectCrud.cs" />
     <Compile Include="domain\CaseResult.cs" />
     <Compile Include="Migrations\201809061253164_init.cs" />
@@ -78,6 +75,8 @@
       <DependentUpon>201809061343001_init_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+=======
+>>>>>>> parent of 9507b51... proect crud done
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="resources\Resource1.Designer.cs">
@@ -90,16 +89,12 @@
     <Compile Include="services\IFileService.cs" />
     <Compile Include="services\initFolders.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
-    <Compile Include="ViewModel\caseVM\CasesViewModel.cs" />
-    <Compile Include="ViewModel\caseVM\CaseViewModel.cs" />
-    <Compile Include="ViewModel\caseVM\CreateCaseViewModel.cs" />
-    <Compile Include="ViewModel\caseVM\EditCaseViewModel.cs" />
-    <Compile Include="ViewModel\proectVM\CreateProectViewModel.cs" />
-    <Compile Include="ViewModel\proectVM\EditProectViewModel.cs" />
-    <Compile Include="ViewModel\proectVM\ProectsViewModel.cs" />
-    <Compile Include="ViewModel\proectVM\ProectViewModel.cs" />
-    <Compile Include="Views\case\CaseView.xaml.cs">
-      <DependentUpon>CaseView.xaml</DependentUpon>
+    <Compile Include="ViewModel\case\CasesViewModel.cs" />
+    <Compile Include="ViewModel\case\CaseViewModel.cs" />
+    <Compile Include="ViewModel\case\CreateCaseViewModel.cs" />
+    <Compile Include="ViewModel\case\EditCaseViewModel.cs" />
+    <Compile Include="Views\case\CaseInfoView.xaml.cs">
+      <DependentUpon>CaseInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\case\CreateCaseView.xaml.cs">
       <DependentUpon>CreateCaseView.xaml</DependentUpon>
@@ -107,27 +102,6 @@
     <Compile Include="Views\case\EditCaseView.xaml.cs">
       <DependentUpon>EditCaseView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\proect\CreateProectView.xaml.cs">
-      <DependentUpon>CreateProectView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\proect\EditProectView.xaml.cs">
-      <DependentUpon>EditProectView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\windows\ProectsWindow.xaml.cs">
-      <DependentUpon>ProectsWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Views\proect\CreateProectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\proect\EditProectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\proect\ProectView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\windows\CasesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,9 +114,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Views\proect\ProectView.xaml.cs">
-      <DependentUpon>ProectView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\windows\CasesWindow.xaml.cs">
       <DependentUpon>CasesWindow.xaml</DependentUpon>
     </Compile>
@@ -152,7 +123,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\case\CaseView.xaml">
+    <Page Include="Views\case\CaseInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,10 +132,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\case\EditCaseView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\windows\ProectsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,12 +150,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+<<<<<<< HEAD
     <EmbeddedResource Include="Migrations\201809061253164_init.resx">
       <DependentUpon>201809061253164_init.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809061343001_init_2.resx">
       <DependentUpon>201809061343001_init_2.cs</DependentUpon>
     </EmbeddedResource>
+=======
+>>>>>>> parent of 9507b51... proect crud done
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
