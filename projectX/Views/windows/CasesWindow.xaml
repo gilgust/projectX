@@ -21,18 +21,13 @@
 			<Setter Property="Margin" Value="5"/>
 		</Style>
 		
-		<!--<DataTemplate DataType="{x:Type views:CaseView}">
-			<views:CaseView/>
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type views:EditCaseView}">
-			--><!--<views:EditCaseView/>--><!--
-		</DataTemplate>-->
+ 
 
 	</Window.Resources>
 
-	<Window.DataContext>
+	<!--<Window.DataContext>
 		<vm:CasesViewModel/>
-	</Window.DataContext>
+	</Window.DataContext>-->
 
 	<Grid>
 		<Grid.ColumnDefinitions>
@@ -44,7 +39,7 @@
 			<RowDefinition Height="35"/>
 		</Grid.RowDefinitions>
 
-		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Cases.Cases}" SelectedItem="{Binding Path=SelectedCase}">
+		<ListBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Path=Cases, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=SelectedCase}">
 			<ListBox.ItemTemplate>
 				<DataTemplate>
 					<TextBlock FontSize="18" Text="{Binding Path=Name}"/>
@@ -57,7 +52,7 @@
 		<StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0"> 
 			<Button Content="Edit" Command="{Binding Path=EditCaseCommand}"/>
 			<Button Content="Create" Command="{Binding Path=CreateCaseCommand}"/>
-			<Button Content="Delete" Command="{Binding Path=DeleteCaseCommand}"/>
+			<Button Content="Delete" Command="{Binding Path=DeleteCaseCommand}" />
 
 		</StackPanel>
 		 

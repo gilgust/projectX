@@ -6,39 +6,62 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using projectX.Annotations;
 using projectX.domain;
 using projectX.Data;
 using projectX.Data.interfaces;
+using projectX.Data.singleton;
 using projectX.Views;
 
 namespace projectX.ViewModel
 {
     public class CasesViewModel : INotifyPropertyChanged
     {
+        private readonly ICaseCrud _db;
+        private ObservableCollection<Case> _cases;
         private Case _selectedCase;
         private UserControl _currentView;
         private  UserControl _caseView;
-        private  UserControl _editCaseView;
+        private readonly UserControl _editCaseView;
         private readonly UserControl _createCaseView;
 
         //ctor
 
         public CasesViewModel()
         {
-            Cases = DataFromCollections.Instance;
-            _caseView = null;
+            _db = new CasesProvider();
+            _caseView = new CaseView();
             _editCaseView = new EditCaseView();
-            _createCaseView = new CreateCaseView() { DataContext = new CreateCaseViewModel() };
+
+            _createCaseView = new CreateCaseView();
+            ((CreateCaseViewModel) _createCaseView.DataContext).AddedItem += UpdataList;
 
             _currentView = null;
+            Cases = null; 
         } 
 
         #region property 
 
-        public ICaseCrud Cases { get; }
+        public ObservableCollection<Case> Cases
+        {
+            get
+            {
+                if (_cases == null)
+                {
+                    Task.Run(() => { Cases = _db.Cases; });
+                }
+
+                return _cases;
+            }
+            private set
+            {
+                _cases = value;
+                OnPropertyChanged(nameof(Cases));
+            }
+        }
 
         public Case SelectedCase
         {
@@ -48,8 +71,9 @@ namespace projectX.ViewModel
                 if (_selectedCase == value) return;
                 _selectedCase = value;
                 
-                if(_caseView == null)
-                    _caseView = new CaseView() { DataContext = new CaseViewModel() }; 
+                //if(_caseView == null)
+                //    _caseView = new CaseView{ DataContext = new CaseViewModel(value) };
+                //else
                 ((CaseViewModel)_caseView.DataContext).Case = value;
 
 
@@ -97,7 +121,7 @@ namespace projectX.ViewModel
                            {
 
                                _editCaseView.DataContext = new EditCaseViewModel(SelectedCase);
-
+                               ((EditCaseViewModel)_editCaseView.DataContext).EditItem += GetChangedCase;
                                CurrentView = _editCaseView;
                            },
                            obj => SelectedCase != null));
@@ -126,7 +150,8 @@ namespace projectX.ViewModel
                 return _deleteCaseCommand ??
                        (_deleteCaseCommand = new RelayCommand(obj =>
                            {
-                               Cases.RemoveCace(SelectedCase);
+                               _db.RemoveCace(SelectedCase);
+                               Cases.Remove(SelectedCase); 
                                CurrentView = null;
                            },
                            obj => SelectedCase != null));
@@ -134,7 +159,26 @@ namespace projectX.ViewModel
         }
         #endregion
 
+        private void UpdataList(Case newCase)
+        {
+            Cases.Add(newCase);
+            CurrentView = null;
+        }
 
+        private void GetChangedCase(Case editCase)
+        {
+            var oldCase = Cases.First(c => c.Id == editCase.Id);
+            var index = Cases.IndexOf(oldCase);
+            Cases.Remove(oldCase); 
+            Cases.Insert(index ,editCase);
+
+            SelectedCase = Cases[index];
+
+            //((CaseViewModel)_caseView.DataContext).Case = editCase;
+            //CurrentView = _caseView;
+        }
+
+        #region notify
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -142,5 +186,6 @@ namespace projectX.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

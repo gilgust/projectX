@@ -64,14 +64,30 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\ApplicationContext.cs" />
-    <Compile Include="Data\DataFromCollections.cs" />
+    <Compile Include="Data\CasesProvider.cs" />
+    <Compile Include="Data\singleton\DataFromCollections.cs" />
     <Compile Include="Data\DB_Init.cs" />
     <Compile Include="Data\interfaces\ICaseCrud.cs" />
     <Compile Include="Data\interfaces\IProectCrud.cs" />
+    <Compile Include="Data\singleton\SingletonProvider.cs" />
     <Compile Include="domain\CaseResult.cs" />
+    <Compile Include="domain\Img.cs" />
+    <Compile Include="domain\Mark.cs" />
     <Compile Include="Migrations\201809061253164_init.cs" />
     <Compile Include="Migrations\201809061253164_init.Designer.cs">
       <DependentUpon>201809061253164_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809101627452_addMarks.cs" />
+    <Compile Include="Migrations\201809101627452_addMarks.Designer.cs">
+      <DependentUpon>201809101627452_addMarks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121532594_change_domain_models.cs" />
+    <Compile Include="Migrations\201809121532594_change_domain_models.Designer.cs">
+      <DependentUpon>201809121532594_change_domain_models.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809121600170_add_dbset_Img.cs" />
+    <Compile Include="Migrations\201809121600170_add_dbset_Img.Designer.cs">
+      <DependentUpon>201809121600170_add_dbset_Img.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -181,6 +197,15 @@
     </Compile>
     <EmbeddedResource Include="Migrations\201809061253164_init.resx">
       <DependentUpon>201809061253164_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809101627452_addMarks.resx">
+      <DependentUpon>201809101627452_addMarks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121532594_change_domain_models.resx">
+      <DependentUpon>201809121532594_change_domain_models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809121600170_add_dbset_Img.resx">
+      <DependentUpon>201809121600170_add_dbset_Img.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

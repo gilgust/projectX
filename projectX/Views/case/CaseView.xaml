@@ -36,7 +36,7 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>
-								<TextBlock Text="{Binding}" Margin="10 0 0 0"/>
+								<TextBlock Text="{Binding Path=Text}" Margin="10 0 0 0"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
@@ -51,7 +51,7 @@
 					</ListBox.ItemsPanel>
 					<ListBox.ItemTemplate>
 						<DataTemplate>
-							<Image Source="{Binding}" Width="40" Height="40"/>
+							<Image Source="{Binding Path=src}" Width="40" Height="40"/>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>

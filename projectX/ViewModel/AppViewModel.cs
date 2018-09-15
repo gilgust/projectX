@@ -23,8 +23,9 @@ namespace projectX.ViewModel
                 return _showCasesCommand ??
                        (_showCasesCommand = new RelayCommand(obj =>
                            {
-                               CasesWindow cw = new CasesWindow(){DataContext = new CasesViewModel()};
-                               cw.Show(); 
+                               CasesWindow cw = new CasesWindow();
+                               cw.Show();
+                               cw.DataContext = new CasesViewModel();
                            })
                        );
             }

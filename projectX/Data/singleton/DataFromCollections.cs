@@ -24,24 +24,24 @@ namespace projectX.Data
             {
                 new Case {///Proects = new ObservableCollection<Proect>(),
                     Description = "1111 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                    Marks = new ObservableCollection<string> { "#Case#1", "#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf"},
-                    ImgSrc = new ObservableCollection<string>{ @"/resources/Chrysanthemum.jpg" },
+                    Marks = new List<Mark>{new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"}},
+                    ImgSrc = new List<projectX.domain.Img>{ new Img{src = @"/resources/Chrysanthemum.jpg" } },
                     Name = " First Case"},
                 new Case {//Proects = new ObservableCollection<Proect>(),
                     Description = "22222 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                    Marks = new ObservableCollection<string>{ "#Case#2", "#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf2222222222222222222222222222222222222222222"}, 
+                    Marks = new List<Mark>{new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"}},
                     Name = " Second Case"},
                 new Case {//Proects = new ObservableCollection<Proect>(),
                     Description = "33333 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                    Marks = new ObservableCollection<string>{ "#Case#3", "#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf111111111111111111111111111111"}, 
+                    Marks = new List<Mark>{new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"}},
                     Name = " Therd Case"},
                 new Case {//Proects = new ObservableCollection<Proect>(),
                     Description = "44444 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                    Marks = new ObservableCollection<string>{ "#Case#4", "#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf"}, 
+                    Marks = new List<Mark>{new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"}},
                     Name = " 4th Case"},
                 new Case {//Proects = new ObservableCollection<Proect>(),
                     Description = "555555 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
-                    Marks = new ObservableCollection<string>{"#Case#5","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf"}, 
+                    Marks = new List<Mark>{new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"},new Mark{Text = "11111"}},
                     Name = " 5th Case"},
             };
             Proects = new ObservableCollection<Proect>()
@@ -65,10 +65,12 @@ namespace projectX.Data
                     Description = "555555 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
                     Marks = new ObservableCollection<string>{"#Case#5","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf","#dfsdfsdf"}}
             };
+            Marks = new ObservableCollection<string>();
         } 
 
         public ObservableCollection<Case> Cases { get; set; }
         public ObservableCollection<Proect> Proects { get; set; }
+        public ObservableCollection<string> Marks { get; set; }
 
         #region proectCrud
         public void AddProect(Proect newProect)
@@ -91,9 +93,10 @@ namespace projectX.Data
         #endregion
 
         #region CaseCrud
-        public void AddCase(Case newCase)
+        public Case AddCase(Case newCase)
         {
-            Cases.Add(newCase);
+             Cases.Add(newCase);
+            return null;
         }
 
         public void RemoveCace(Case remCase)

@@ -8,14 +8,17 @@ namespace projectX.Data
 {
     public class ApplicationContext : DbContext
     {
-        public ApplicationContext() : base("name=ApplicationContext"){}
+        public ApplicationContext() : base("name=ApplicationContext-1223") {}
 
         static ApplicationContext()
         {
-            Database.SetInitializer(new DB_Init());
+            //Database.SetInitializer(new DB_Init());
         }
 
         public virtual DbSet<Case> Cases { get; set; }
         public virtual DbSet<Proect> Proects{ get; set; }
+        public virtual DbSet<Mark> Marks { get; set; }
+        public virtual DbSet<projectX.domain.Img> Imgs { get; set; }
+         
     }
 }

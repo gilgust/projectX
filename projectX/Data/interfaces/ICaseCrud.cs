@@ -11,7 +11,8 @@ namespace projectX.Data.interfaces
     public interface ICaseCrud
     {
         ObservableCollection<Case> Cases { get; set; }
-        void AddCase(Case newCase);
+        ObservableCollection<string> Marks { get; set; }
+        Case AddCase(Case newCase);
         void RemoveCace(Case remCase);
         void EditCase(Case newCase);
     }

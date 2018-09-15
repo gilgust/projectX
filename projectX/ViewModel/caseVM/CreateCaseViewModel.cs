@@ -16,26 +16,27 @@ namespace projectX.ViewModel
 {
     public class CreateCaseViewModel : INotifyPropertyChanged
     {
-        private Case _case;
-        private  readonly ICaseCrud _cases;
-        private readonly IDialogService _dialogService;
-        private string _selectedMark;
-        private string _selectedImg;
+        private readonly ICaseCrud _db;
+        private readonly IDialogService _dialogService; 
 
+        public delegate void AddedItemHandler(Case newCase); 
+        public event AddedItemHandler AddedItem;
+
+        //ctor
         public CreateCaseViewModel()
         {
-            _cases = DataFromCollections.Instance;
-
-            _selectedMark = null;
-            _selectedImg = null;
-
+            _db = new CasesProvider(); 
             _dialogService = new DefaultDialogService();
-            
-            _case = new Case {Name = "", Description = ""};
+
+            NewCase = new Case {Name = "", Description = ""};
+            Marks = new ObservableCollection<Mark>(_case.Marks);
+            Imgs = new ObservableCollection<projectX.domain.Img>(_case.ImgSrc);
+            NewMark = "";
         }
 
         #region prop
-        
+
+        private Case _case;
         public Case NewCase
         {
             get => _case;
@@ -46,27 +47,39 @@ namespace projectX.ViewModel
                 OnPropertyChanged(nameof(NewCase));
             }
         }
-         
 
-        public string SelectedMark
+        private ObservableCollection<Mark> _marks;
+        public ObservableCollection<Mark> Marks
         {
-            get => _selectedMark;
+            get => _marks;
             set
             {
-                if (_selectedMark == value) return;
-                _selectedMark = value;
-                OnPropertyChanged(nameof(SelectedMark));
+                if(ReferenceEquals(_marks, value))return;
+                _marks = value;
+                OnPropertyChanged(nameof(Marks));
             }
         }
 
-        public string SelectedImg
+        private ObservableCollection<projectX.domain.Img> _img;
+        public ObservableCollection<projectX.domain.Img> Imgs
         {
-            get => _selectedImg;
+            get => _img;
             set
             {
-                if(_selectedImg == value) return;
-                _selectedImg = value;
-                OnPropertyChanged(nameof(SelectedImg));
+                _img = value;
+                OnPropertyChanged(nameof(Imgs));
+            }
+        }
+
+        private string _newMark; 
+        public string NewMark
+        {
+            get => _newMark;
+            set
+            {
+                if(_newMark == value) return;
+                _newMark = value;
+                OnPropertyChanged(nameof(NewMark));
             }
         }
 
@@ -82,9 +95,10 @@ namespace projectX.ViewModel
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
                            {
-                               NewCase.Marks.Add(SelectedMark);
-                               SelectedMark = null;
-                           }, obj => !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " " && !_case.Marks.Contains(SelectedMark))
+                               Marks.Add(new Mark { Text = NewMark });
+                               NewCase.Marks.Add(new Mark{Text = NewMark });
+                               NewMark = "";
+                           }, obj => !string.IsNullOrWhiteSpace(NewMark))
                        );
             }
         }
@@ -97,10 +111,9 @@ namespace projectX.ViewModel
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
                            {
-                               if (!NewCase.Marks.Contains(SelectedMark)) return;
-                               NewCase.Marks.Remove(SelectedMark);
-                               SelectedMark = null;
-                           }, obj => !string.IsNullOrEmpty(SelectedMark) && _case.Marks.Contains(SelectedMark))
+                               NewCase.Marks.Remove((Mark) obj);
+                               Marks.Remove((Mark) obj);
+                           })
                        );
             }
         } 
@@ -116,7 +129,8 @@ namespace projectX.ViewModel
                        (_addImgCommand = new RelayCommand(obj =>
                        { 
                            _dialogService.OpenFileDialog();
-                           NewCase.ImgSrc.Add(_dialogService.FilePath);
+                           NewCase.ImgSrc.Add(new Img { src =_dialogService.FilePath });
+                           Imgs.Add(new projectX.domain.Img{src = _dialogService.FilePath });
                        }));
             }
         }
@@ -129,9 +143,9 @@ namespace projectX.ViewModel
                 return _deleteImgCommnad ??
                        (_deleteImgCommnad = new RelayCommand(obj =>
                        {
-                           NewCase.ImgSrc.Remove(SelectedImg);
-                           SelectedImg = null;
-                       }, obj => NewCase.ImgSrc.Count >0 && SelectedImg != null));
+                           NewCase.ImgSrc.Remove((projectX.domain.Img) obj);
+                           Imgs.Add((projectX.domain.Img)obj);
+                       }));
             }
         }
 
@@ -143,8 +157,11 @@ namespace projectX.ViewModel
                 return _saveCaseCommand ??
                        (_saveCaseCommand = new RelayCommand(obj =>
                            {
-                               _cases.AddCase(_case);
+                               var c = _db.AddCase(_case);
+                               AddedItem?.Invoke(c);
                                NewCase = new Case {Name = "", Description = ""}; 
+                               Marks = new ObservableCollection<Mark>(NewCase.Marks);
+                               Imgs = new ObservableCollection<Img>(NewCase.ImgSrc);
                            })
                        );
             }
@@ -159,6 +176,6 @@ namespace projectX.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion 
+        #endregion
     }
 }
