@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:projectX.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="200" Width="300"
-		ResizeMode="NoResize" 
+		ResizeMode="NoResize"  
 		>
 	<Window.DataContext>
 		<vm:AppViewModel/>

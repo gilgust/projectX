@@ -20,11 +20,14 @@ namespace projectX.ViewModel
 {
     public class CasesViewModel : INotifyPropertyChanged
     {
-        private readonly ICaseCrud _db;
+        private readonly ICaseCrud _caseProvider; 
+
         private ObservableCollection<Case> _cases;
+
         private Case _selectedCase;
+
         private UserControl _currentView;
-        private  UserControl _caseView;
+        private readonly UserControl _caseView;
         private readonly UserControl _editCaseView;
         private readonly UserControl _createCaseView;
 
@@ -32,12 +35,13 @@ namespace projectX.ViewModel
 
         public CasesViewModel()
         {
-            _db = new CasesProvider();
+            _caseProvider = new CasesProvider(); 
+
             _caseView = new CaseView();
-            _editCaseView = new EditCaseView();
+            _editCaseView = new EditCaseView{DataContext = null};
 
             _createCaseView = new CreateCaseView();
-            ((CreateCaseViewModel) _createCaseView.DataContext).AddedItem += UpdataList;
+            ((CreateCaseViewModel) _createCaseView.DataContext).AddedItem += ChangeTargetAfterAddedCase;
 
             _currentView = null;
             Cases = null; 
@@ -51,7 +55,7 @@ namespace projectX.ViewModel
             {
                 if (_cases == null)
                 {
-                    Task.Run(() => { Cases = _db.Cases; });
+                    Task.Run(() => { Cases = _caseProvider.Cases; });
                 }
 
                 return _cases;
@@ -71,14 +75,10 @@ namespace projectX.ViewModel
                 if (_selectedCase == value) return;
                 _selectedCase = value;
                 
-                //if(_caseView == null)
-                //    _caseView = new CaseView{ DataContext = new CaseViewModel(value) };
-                //else
-                ((CaseViewModel)_caseView.DataContext).Case = value;
-
+                _caseView.DataContext = new CaseViewModel(value); 
 
                 OnPropertyChanged(nameof(SelectedCase));
-                ShowCaseInfoCommand.Execute(null);
+                CurrentView = _caseView;
             }
         }
 
@@ -94,22 +94,7 @@ namespace projectX.ViewModel
 
         #endregion
 
-        #region commands
-        //show CaseInfo
-        private RelayCommand _showCaseInfoCommand;
-        public RelayCommand ShowCaseInfoCommand
-        {
-            get
-            {
-                return _showCaseInfoCommand ??
-                       (_showCaseInfoCommand = new RelayCommand(obj =>
-                       {
-                           if(SelectedCase!= null)
-                               CurrentView = _caseView;
-                       }));
-            }
-        }
-
+        #region commands 
         //show CaseInfo
         private RelayCommand _editCaseCommand;
         public RelayCommand EditCaseCommand
@@ -119,6 +104,8 @@ namespace projectX.ViewModel
                 return _editCaseCommand ??
                        (_editCaseCommand = new RelayCommand(obj =>
                            {
+                               if(_editCaseView.DataContext != null)
+                                   ((EditCaseViewModel)_editCaseView.DataContext).EditItem -= GetChangedCase;
 
                                _editCaseView.DataContext = new EditCaseViewModel(SelectedCase);
                                ((EditCaseViewModel)_editCaseView.DataContext).EditItem += GetChangedCase;
@@ -135,8 +122,7 @@ namespace projectX.ViewModel
             {
                 return _createCaseCommand ??
                        (_createCaseCommand = new RelayCommand(obj =>
-                           {
-                               SelectedCase = null;
+                           { 
                                CurrentView = _createCaseView;
                            }));
             }
@@ -150,7 +136,7 @@ namespace projectX.ViewModel
                 return _deleteCaseCommand ??
                        (_deleteCaseCommand = new RelayCommand(obj =>
                            {
-                               _db.RemoveCace(SelectedCase);
+                               _caseProvider.RemoveCace(SelectedCase);
                                Cases.Remove(SelectedCase); 
                                CurrentView = null;
                            },
@@ -158,24 +144,18 @@ namespace projectX.ViewModel
             }
         }
         #endregion
-
-        private void UpdataList(Case newCase)
+         
+        private void GetChangedCase(int id)
         {
-            Cases.Add(newCase);
-            CurrentView = null;
+            var target = Cases.First(c => c.Id == id);
+            target = _caseProvider.GetCaseById(id);
+            
+            SelectedCase = target;
         }
 
-        private void GetChangedCase(Case editCase)
+        private void ChangeTargetAfterAddedCase(int id)
         {
-            var oldCase = Cases.First(c => c.Id == editCase.Id);
-            var index = Cases.IndexOf(oldCase);
-            Cases.Remove(oldCase); 
-            Cases.Insert(index ,editCase);
-
-            SelectedCase = Cases[index];
-
-            //((CaseViewModel)_caseView.DataContext).Case = editCase;
-            //CurrentView = _caseView;
+            SelectedCase = Cases.First(c => c.Id == id);
         }
 
         #region notify

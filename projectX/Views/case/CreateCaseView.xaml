@@ -34,7 +34,7 @@
 				<TextBlock Text="Имя"/>
 				<TextBox Text="{Binding Path=NewCase.Name}" Name="TBName"/>
 				<TextBlock Text="Описание"/>
-				<TextBox Text="{Binding Path=NewCase.Description}" TextWrapping="Wrap" Name="TBDescription"/> 
+				<TextBox Text="{Binding Path=NewCase.Description}" TextWrapping="Wrap" Name="TBDescription" AcceptsReturn="True" /> 
 
 				<TextBlock Text="Теги"/>
 				<ListBox ItemsSource="{Binding Path=Marks}" >  

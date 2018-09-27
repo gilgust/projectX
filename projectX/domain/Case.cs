@@ -20,8 +20,7 @@ namespace projectX.domain
         public Case()
         {
             Id = Guid.NewGuid().GetHashCode();
-
-            //Proects = new ObservableCollection<Proect>();
+             
             Marks = new List<Mark>(); 
             ImgSrc = new List<projectX.domain.Img>();
         }
@@ -52,15 +51,14 @@ namespace projectX.domain
                 OnPropertyChanged(nameof(Description));
             }
         }
-
-        //public ObservableCollection<Proect> Proects { get; set; } 
+         
         public List<Mark> Marks { get; set; }  
         public List<projectX.domain.Img> ImgSrc { get; set; }
+        public List<CaseResult> CaseResults { get; set; }
 
         #endregion
 
-
-
+        #region notify
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -68,10 +66,27 @@ namespace projectX.domain
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
+        #endregion
+        #region clone
         public object Clone()
         {
-            return this.MemberwiseClone();
+            var newCase = new Case
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Description = this.Description
+            };
+
+            var arM = new Mark[this.Marks.Count];
+            this.Marks.CopyTo(arM);
+            newCase.Marks = arM.ToList();
+
+            var arI = new Img[this.ImgSrc.Count];
+            this.ImgSrc.CopyTo(arI);
+            newCase.ImgSrc = arI.ToList();
+
+            return newCase;
         }
+        #endregion
     }
 }

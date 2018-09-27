@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,29 +17,48 @@ namespace projectX.ViewModel.proectVM
 {
     public class ProectsViewModel: INotifyPropertyChanged
     {
+        private readonly IProectCrud _proectProvider;
+
+        private ObservableCollection<Proect> _proects;
         private Proect _selectedProect;
+
         private UserControl _currentView;
-        private UserControl _proectView;
+        private readonly UserControl _proectView;
         private readonly UserControl _editProectView;
         private readonly UserControl _createProectView;
-
-        //public ProectsViewModel()
-        //{
-            
-        //}
+        
 
         public ProectsViewModel()
         {
-            Proects = DataFromCollections.Instance;
-            _proectView = null;
+            _proectProvider = new ProectProvider();
+
+            _proectView = new ProectView();
             _editProectView = new EditProectView();
             _createProectView = new CreateProectView{DataContext = new CreateProectViewModel()};
+            ((CreateProectViewModel)_createProectView.DataContext).AddedItem += ChangeTargetAfterAddedProect;
 
             _currentView = null;
-        } 
+        }
 
-        #region prop 
-        public IProectCrud Proects { get; }
+        #region prop  
+
+        public ObservableCollection<Proect> Proects
+        {
+            get
+            {
+                if (_proects == null)
+                {
+                    Task.Run(() => { Proects = _proectProvider.Proects; }); 
+                }
+
+                return _proects;
+            }
+            private set
+            {
+                _proects = value;
+                OnPropertyChanged(nameof(Proects));
+            }
+        }
 
         public Proect SelectedProect
         {
@@ -47,13 +67,11 @@ namespace projectX.ViewModel.proectVM
             {
                 if (_selectedProect == value) return;
                 _selectedProect = value;
-
-                if (_proectView == null)
-                    _proectView = new ProectView{ DataContext = new ProectViewModel()};
-                ((ProectViewModel)_proectView.DataContext).Proect = value;
+                
+                _proectView.DataContext = new ProectViewModel(value);
                 
                 OnPropertyChanged(nameof(SelectedProect));
-                ShowProectInfoCommand.Execute(null);
+                CurrentView = _proectView;
             }
         }
 
@@ -71,22 +89,9 @@ namespace projectX.ViewModel.proectVM
         #endregion
 
         #region commands
-        //show ProectInfo
-        private RelayCommand _showProectInfoCommand;
-        public RelayCommand ShowProectInfoCommand
-        {
-            get
-            {
-                return _showProectInfoCommand ??
-                       (_showProectInfoCommand = new RelayCommand(obj =>
-                       {
-                           if (SelectedProect != null)
-                               CurrentView = _proectView;
-                       }));
-            }
-        }
 
-        //show CaseInfo
+
+        //show EditProect
         private RelayCommand _editProectCommand;
         public RelayCommand EditProectCommand
         {
@@ -94,10 +99,14 @@ namespace projectX.ViewModel.proectVM
             {
                 return _editProectCommand ??
                        (_editProectCommand = new RelayCommand(obj =>
-                       {
-                           _editProectView.DataContext = new EditProectViewModel(SelectedProect);
+                           {
+                               if (_editProectView.DataContext != null)
+                                   ((EditProectViewModel) _editProectView.DataContext).EditItem -= GetChangeProect;
 
-                           CurrentView = _editProectView;
+                               _editProectView.DataContext = new EditProectViewModel(SelectedProect);
+                               ((EditProectViewModel)_editProectView.DataContext).EditItem += GetChangeProect;
+
+                               CurrentView = _editProectView;
                        },
                            obj => SelectedProect != null));
             }
@@ -110,8 +119,7 @@ namespace projectX.ViewModel.proectVM
             {
                 return _createProectCommand ??
                        (_createProectCommand = new RelayCommand(obj =>
-                       {
-                           SelectedProect = null;
+                       { 
                            CurrentView = _createProectView;
                        }));
             }
@@ -125,7 +133,8 @@ namespace projectX.ViewModel.proectVM
                 return _deleteProectCommand ??
                        (_deleteProectCommand = new RelayCommand(obj =>
                        {
-                           Proects.RemoveProect(SelectedProect);
+                           _proectProvider.RemoveProect(SelectedProect);
+                           Proects.Remove(SelectedProect);
                            CurrentView = null;
                        },
                            obj => SelectedProect != null));
@@ -133,6 +142,18 @@ namespace projectX.ViewModel.proectVM
         }
         #endregion
 
+        private void GetChangeProect(int id)
+        {
+            var target = Proects.First(c => c.Id == id);
+            target = _proectProvider.GetProectById(id);
+
+            SelectedProect = target;
+        }
+
+        private void ChangeTargetAfterAddedProect(int id)
+        {
+            SelectedProect = Proects.First(p => p.Id == id);
+        }
 
         #region notify
         public event PropertyChangedEventHandler PropertyChanged;

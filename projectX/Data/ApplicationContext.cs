@@ -19,6 +19,6 @@ namespace projectX.Data
         public virtual DbSet<Proect> Proects{ get; set; }
         public virtual DbSet<Mark> Marks { get; set; }
         public virtual DbSet<projectX.domain.Img> Imgs { get; set; }
-         
+        public virtual DbSet<CaseResult> CaseResults { get; set; }
     }
 }

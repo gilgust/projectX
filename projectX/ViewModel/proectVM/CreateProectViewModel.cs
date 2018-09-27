@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using projectX.Annotations;
 using projectX.domain;
 using projectX.Data;
@@ -15,26 +18,25 @@ namespace projectX.ViewModel.proectVM
 {
     public class CreateProectViewModel : INotifyPropertyChanged
     {
-        private Proect _proect;
-        private readonly IProectCrud _proects; 
-        private string _selectedMark;
+        private readonly IProectCrud _proectsProvider;
+        private readonly IMarkCrud _markProvider;
 
-        //public CreateProectViewModel()
-        //{
-
-        //}
+        public delegate void AddedItemHandler(int Id);
+        public event AddedItemHandler AddedItem;
 
         public CreateProectViewModel()
-        {
-            _proects = DataFromCollections.Instance;
-
-            _selectedMark = null;
+        { 
+            _proectsProvider = new ProectProvider();
+            _markProvider = new MarkProvider();
 
             _proect = new Proect { Name = "", Description = "" };
+            Marks = new ObservableCollection<Mark>(_proect.Marks);
+            NewMark = "";
         }
 
         #region prop
 
+        private Proect _proect;
         public Proect NewProect
         {
             get => _proect;
@@ -46,15 +48,27 @@ namespace projectX.ViewModel.proectVM
             }
         }
 
-
-        public string SelectedMark
+        private ObservableCollection<Mark> _marks; 
+        public ObservableCollection<Mark> Marks
         {
-            get => _selectedMark;
+            get => _marks;
             set
             {
-                if (_selectedMark == value) return;
-                _selectedMark = value;
-                OnPropertyChanged(nameof(SelectedMark));
+                if(ReferenceEquals(_marks, value)) return;
+                _marks = value;
+                OnPropertyChanged(nameof(Marks));
+            }
+        }
+
+        private string _newMark;
+        public string NewMark
+        {
+            get => _newMark;
+            set
+            {
+                if (_newMark == value) return;
+                _newMark = value;
+                OnPropertyChanged(nameof(NewMark));
             }
         }
         #endregion
@@ -69,10 +83,12 @@ namespace projectX.ViewModel.proectVM
             {
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
-                       {
-                           NewProect.Marks.Add(SelectedMark);
-                           SelectedMark = null;
-                       }, obj => !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " " && !_proect.Marks.Contains(SelectedMark))
+                           {
+                               var mark = _markProvider.AddMark(NewMark);
+                               Marks.Add(mark);
+                               NewProect.Marks.Add(mark);
+                               NewMark = "";
+                           }, obj => !string.IsNullOrWhiteSpace(NewMark))
                        );
             }
         }
@@ -84,11 +100,10 @@ namespace projectX.ViewModel.proectVM
             {
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
-                       {
-                           if (!NewProect.Marks.Contains(SelectedMark)) return;
-                           NewProect.Marks.Remove(SelectedMark);
-                           SelectedMark = null;
-                       }, obj => !string.IsNullOrEmpty(SelectedMark) && _proect.Marks.Contains(SelectedMark))
+                           {
+                               NewProect.Marks.Remove((Mark) obj);
+                               Marks.Remove((Mark) obj);
+                           })
                        );
             }
         } 
@@ -100,10 +115,12 @@ namespace projectX.ViewModel.proectVM
             {
                 return _saveCaseCommand ??
                        (_saveCaseCommand = new RelayCommand(obj =>
-                       {
-                           _proects.AddProect(_proect);
-                           NewProect = new Proect { Name = "", Description = "" };
-                       })
+                           {
+                               var p = _proectsProvider.AddProect(_proect);
+                               AddedItem?.Invoke(p.Id);
+                               NewProect = new Proect { Name = "", Description = "" };
+                               Marks = new ObservableCollection<Mark>(NewProect.Marks);
+                           })
                        );
             }
         }

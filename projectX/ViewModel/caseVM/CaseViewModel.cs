@@ -15,69 +15,32 @@ namespace projectX.ViewModel
 {
     public class CaseViewModel : INotifyPropertyChanged, IDisposable
     {
-        private Case _case;
-        private ApplicationContext db;
-
+        private readonly Case _case; 
         public CaseViewModel(){}
 
-        public CaseViewModel(Case c = null)
+        public CaseViewModel(Case c)
         {
-            if (c != null)
-            {
-                _case = c;
+            _case = c;
+            if(c != null)
                 _case.PropertyChanged += Case_PropertyChanged; 
-            }
         }
 
-        public void Dispose() => _case.PropertyChanged -= Case_PropertyChanged;
+        public void Dispose()
+        {
+            if (_case != null)
+                _case.PropertyChanged -= Case_PropertyChanged;
+        }
 
         private void Case_PropertyChanged(object sender, PropertyChangedEventArgs e) =>
             OnPropertyChanged(e.PropertyName);
 
         #region properties
-        public Case Case
-        {
-            get => _case;
-            set
-            {
-                if (_case == value) return;
-                if (value == null)
-                {
-                    Dispose(); 
-                }
-                else
-                {
-                    _case = value;
-                    _case.PropertyChanged += Case_PropertyChanged;
-                    Marks = _case.Marks;
-                    ImgSrc = _case.ImgSrc;
-                    OnPropertyChanged(nameof(Case));
-                }
-            }
-        }
-
 
         public int Id => _case.Id;
-
         public string Name => _case.Name;
-
-        public string Description => _case.Description; 
-
-        public List<Mark> Marks {
-            get => _case.Marks;
-            set { _case.Marks = value;
-                OnPropertyChanged(nameof(Marks)); }
-        }
-
-        public List<projectX.domain.Img> ImgSrc
-        {
-            get => _case.ImgSrc;
-            set
-            {
-                _case.ImgSrc = value;
-                OnPropertyChanged(nameof(ImgSrc));
-            }
-        }
+        public string Description => _case.Description;
+        public List<Mark> Marks => _case.Marks;
+        public List<projectX.domain.Img> ImgSrc => _case.ImgSrc;
 
 
         private string _selectedMark; 

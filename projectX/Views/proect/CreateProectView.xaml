@@ -8,9 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-	<!--<UserControl.DataContext>
+	<UserControl.DataContext>
 		<mv:CreateProectViewModel/>
-	</UserControl.DataContext>-->
+	</UserControl.DataContext>
 
 	<Grid Background="AliceBlue">
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -35,10 +35,10 @@
 				<TextBlock Text="Имя"/>
 				<TextBox Text="{Binding Path=NewProect.Name}" Name="TBName"/>
 				<TextBlock Text="Описание"/>
-				<TextBox Text="{Binding Path=NewProect.Description}" TextWrapping="Wrap" Name="TBDescription"/>
+				<TextBox Text="{Binding Path=NewProect.Description}" TextWrapping="Wrap" Name="TBDescription" AcceptsReturn="True"/>
 
 				<TextBlock Text="Теги"/>
-				<ListBox ItemsSource="{Binding Path=NewProect.Marks}" SelectedItem="{Binding SelectedMark}" >
+				<ListBox ItemsSource="{Binding Path=Marks}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -53,16 +53,18 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>
-								<TextBlock Text="{Binding}" Margin="5 0 0 0"/>
+								<TextBlock Text="{Binding Path=Text}" Margin="5 0 0 0"/>
+								<Button Content="x"  
+								        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.DeleteMarkCommnad}"
+								        CommandParameter="{Binding}"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
-				<TextBox Text="{Binding SelectedMark, UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Text="{Binding NewMark, UpdateSourceTrigger=PropertyChanged}"/>
 
 				<StackPanel Orientation="Horizontal">
 					<Button Content="Add mark" Command="{Binding Path=AddMarkCommnad}"/>
-					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding SelectedMark}"/>
 				</StackPanel>
 
 			</StackPanel>

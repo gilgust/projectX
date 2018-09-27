@@ -21,9 +21,9 @@
 				<TextBlock Text="Имя"/>
 				<TextBox Text="{Binding Path=Name, UpdateSourceTrigger=PropertyChanged}" />
 				<TextBlock Text="Описание"/>
-				<TextBox Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
+				<TextBox Text="{Binding Path=Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True"/>
 
-				<ListBox ItemsSource="{Binding Path=Marks}" SelectedItem="{Binding Path=SelectedMark}" >
+				<ListBox ItemsSource="{Binding Path=Marks}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -37,17 +37,20 @@
 					</ListBox.ItemsPanel>
 					<ListBox.ItemTemplate>
 						<DataTemplate>
-							<StackPanel>
-								<TextBlock Text="{Binding}" Margin="10 0 0 0"/>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Path=Text}" Margin="10 0 0 0"/>
+								<Button Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,
+									AncestorType={x:Type UserControl}},
+									Path=DataContext.DeleteMarkCommnad}"
+								        CommandParameter="{Binding}"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
-				<TextBox Text="{Binding Path=SelectedMark , UpdateSourceTrigger=PropertyChanged}"/>
+				<TextBox Text="{Binding Path=NewMark, UpdateSourceTrigger=PropertyChanged}"/>
 
 				<StackPanel Orientation="Horizontal">
 					<Button Content="Add mark" Command="{Binding Path=AddMarkCommnad}"/>
-					<Button Content="delete mark" Command="{Binding Path=DeleteMarkCommnad}" CommandParameter="{Binding Path=SelectedMark}"/>
 				</StackPanel>
 
 			</StackPanel>

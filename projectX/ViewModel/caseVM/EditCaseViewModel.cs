@@ -16,17 +16,16 @@ namespace projectX.ViewModel
 {
     public class EditCaseViewModel : INotifyPropertyChanged, IDisposable
     {
-        private Case _originalCase;
+        private readonly Case _originalCase;
         private readonly Case _cloneCase;
-        private ObservableCollection<Mark> _marks;
-        private ObservableCollection<projectX.domain.Img> _imgSrc;
 
         private bool _wasChange;
 
-        public delegate void EditCaseHandler(Case editCase);
+        public delegate void EditCaseHandler(int id);
         public event EditCaseHandler EditItem;
 
-        private readonly ICaseCrud _data;
+        private readonly ICaseCrud _caseProvider;
+        private readonly IMarkCrud _marksProvider;
         private readonly IDialogService _dialogService; 
 
         private string _newMark;
@@ -35,14 +34,15 @@ namespace projectX.ViewModel
         public EditCaseViewModel(Case orCase) 
         {
             _dialogService = new DefaultDialogService();
-            _data = new CasesProvider();  
+            _caseProvider = new CasesProvider();  
+            _marksProvider = new MarkProvider();
 
             _wasChange = false;
 
             _originalCase = orCase;
             _cloneCase = (Case)orCase.Clone();
-            _marks = new ObservableCollection<Mark>(_cloneCase.Marks);
-            _imgSrc = new ObservableCollection<projectX.domain.Img>(_cloneCase.ImgSrc);
+            Marks = new ObservableCollection<Mark>(_cloneCase.Marks);
+            ImgSrc = new ObservableCollection<projectX.domain.Img>(_cloneCase.ImgSrc);
 
 
             _cloneCase.PropertyChanged += Case_PropertyChanged;
@@ -53,8 +53,7 @@ namespace projectX.ViewModel
         public void Dispose() => _cloneCase.PropertyChanged -= Case_PropertyChanged;
         private void Case_PropertyChanged(object sender, PropertyChangedEventArgs e) => OnPropertyChanged(e.PropertyName);
 
-#region prop  
-        #region ClonProperty 
+#region prop
         public string Name
         {
             get => _cloneCase.Name;
@@ -66,37 +65,19 @@ namespace projectX.ViewModel
             set => _cloneCase.Description = value;
         }
 
-        public ObservableCollection<Mark> Marks
-        {
-            get => _marks;
-            set
-            {
-                _marks = value;
-                _wasChange = true;
-            }
-        }
-
-        public ObservableCollection<projectX.domain.Img> ImgSrc
-        {
-            get => _imgSrc;
-            set
-            {
-                _imgSrc = value;
-                _wasChange = true;
-            }
-        }
-        #endregion 
+        public ObservableCollection<Mark> Marks { get; set; }
+        public ObservableCollection<projectX.domain.Img> ImgSrc { get; set; } 
 
         public string NewMark
         {
             get => _newMark;
             set
             {
+                if (_newMark == value) return;
                 _newMark = value;
                 OnPropertyChanged(nameof(NewMark));
             }
         } 
-
 #endregion
 
 #region command
@@ -109,11 +90,13 @@ namespace projectX.ViewModel
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
                        {
-                           Marks.Add(new Mark { Text = NewMark });
-                           _cloneCase.Marks.Add(new Mark { Text = NewMark });
+                           var mark = _marksProvider.AddMark(NewMark);
+                           Marks.Add(mark);
+                           _cloneCase.Marks.Add(mark);
+
                            NewMark = "";
                            _wasChange = true;
-                       }, obj => !String.IsNullOrWhiteSpace(NewMark)));
+                       }, obj => !string.IsNullOrWhiteSpace(NewMark)));
             }
         }
 
@@ -177,9 +160,9 @@ namespace projectX.ViewModel
                 return _saveCaseCommand ??
                        (_saveCaseCommand = new RelayCommand(obj =>
                            {
-                               _data.EditCase(_cloneCase);
+                               _caseProvider.EditCase(_cloneCase);
                            
-                               EditItem?.Invoke(_cloneCase);
+                               EditItem?.Invoke(_cloneCase.Id);
 
                                _wasChange = false;
                            }, x=> ReadeToSave())

@@ -16,16 +16,20 @@ namespace projectX.ViewModel
 {
     public class CreateCaseViewModel : INotifyPropertyChanged
     {
-        private readonly ICaseCrud _db;
+        private readonly ICaseCrud _caseProvider;
+        private readonly IMarkCrud _markProvider;
+
         private readonly IDialogService _dialogService; 
 
-        public delegate void AddedItemHandler(Case newCase); 
+        public delegate void AddedItemHandler(int Id); 
         public event AddedItemHandler AddedItem;
 
         //ctor
         public CreateCaseViewModel()
         {
-            _db = new CasesProvider(); 
+            _caseProvider = new CasesProvider(); 
+            _markProvider = new MarkProvider();
+
             _dialogService = new DefaultDialogService();
 
             NewCase = new Case {Name = "", Description = ""};
@@ -95,8 +99,9 @@ namespace projectX.ViewModel
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
                            {
-                               Marks.Add(new Mark { Text = NewMark });
-                               NewCase.Marks.Add(new Mark{Text = NewMark });
+                               var mark = _markProvider.AddMark(NewMark);
+                               Marks.Add(mark);
+                               NewCase.Marks.Add(mark);
                                NewMark = "";
                            }, obj => !string.IsNullOrWhiteSpace(NewMark))
                        );
@@ -157,8 +162,8 @@ namespace projectX.ViewModel
                 return _saveCaseCommand ??
                        (_saveCaseCommand = new RelayCommand(obj =>
                            {
-                               var c = _db.AddCase(_case);
-                               AddedItem?.Invoke(c);
+                               var c = _caseProvider.AddCase(_case);
+                               AddedItem?.Invoke(c.Id);
                                NewCase = new Case {Name = "", Description = ""}; 
                                Marks = new ObservableCollection<Mark>(NewCase.Marks);
                                Imgs = new ObservableCollection<Img>(NewCase.ImgSrc);

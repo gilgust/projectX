@@ -40,8 +40,9 @@ namespace projectX.ViewModel
                 return _showProectsCommand ??
                        (_showProectsCommand = new RelayCommand(obj =>
                            {
-                               ProectsWindow cw = new ProectsWindow() { DataContext = new ProectsViewModel() };
-                               cw.Show();
+                               ProectsWindow pw = new ProectsWindow();
+                               pw.Show();
+                               pw.DataContext = new ProectsViewModel();
                            })
                        );
             }

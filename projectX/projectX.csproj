@@ -64,7 +64,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Data\ApplicationContext.cs" />
+    <Compile Include="Data\ProectProvider.cs" />
     <Compile Include="Data\CasesProvider.cs" />
+    <Compile Include="Data\interfaces\IMarkCrud.cs" />
+    <Compile Include="Data\MarkProvider.cs" />
     <Compile Include="Data\singleton\DataFromCollections.cs" />
     <Compile Include="Data\DB_Init.cs" />
     <Compile Include="Data\interfaces\ICaseCrud.cs" />
@@ -88,6 +91,18 @@
     <Compile Include="Migrations\201809121600170_add_dbset_Img.cs" />
     <Compile Include="Migrations\201809121600170_add_dbset_Img.Designer.cs">
       <DependentUpon>201809121600170_add_dbset_Img.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809250001525_aaa.cs" />
+    <Compile Include="Migrations\201809250001525_aaa.Designer.cs">
+      <DependentUpon>201809250001525_aaa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261320507_add_CasesResults.cs" />
+    <Compile Include="Migrations\201809261320507_add_CasesResults.Designer.cs">
+      <DependentUpon>201809261320507_add_CasesResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809261322360_update_Case_and_Proects.cs" />
+    <Compile Include="Migrations\201809261322360_update_Case_and_Proects.Designer.cs">
+      <DependentUpon>201809261322360_update_Case_and_Proects.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\Annotations.cs" />
@@ -124,6 +139,9 @@
     </Compile>
     <Compile Include="Views\proect\EditProectView.xaml.cs">
       <DependentUpon>EditProectView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\windows\Pick_a_Case.xaml.cs">
+      <DependentUpon>Pick_a_Case.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\windows\ProectsWindow.xaml.cs">
       <DependentUpon>ProectsWindow.xaml</DependentUpon>
@@ -176,6 +194,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\windows\Pick_a_Case.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\windows\ProectsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,6 +228,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809121600170_add_dbset_Img.resx">
       <DependentUpon>201809121600170_add_dbset_Img.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809250001525_aaa.resx">
+      <DependentUpon>201809250001525_aaa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261320507_add_CasesResults.resx">
+      <DependentUpon>201809261320507_add_CasesResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809261322360_update_Case_and_Proects.resx">
+      <DependentUpon>201809261322360_update_Case_and_Proects.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -10,68 +10,60 @@ namespace projectX.ViewModel.proectVM
 {
     public class EditProectViewModel : INotifyPropertyChanged
     {
-        private Proect _originalProect;
+        private readonly Proect _originalProect;
         private readonly Proect _cloneProect;
         private bool _wasChange;
 
-        private readonly IProectCrud _data;
-        private string _selectedMark;
+        private readonly IProectCrud _proectProvider;
+        private readonly IMarkCrud _markProvider;
 
-        //public EditProectViewModel()
-        //{
+        public delegate void EditProectHandler(int id);
+        public event EditProectHandler EditItem;
 
-        //}
+        private string _newMark; 
 
         public EditProectViewModel(Proect orProect)
         {
-            _data = DataFromCollections.Instance;
-
-            _selectedMark = null;
-
+            _proectProvider = new ProectProvider();
+            _markProvider = new MarkProvider();
             _wasChange = false;
-
+            
             _originalProect = orProect;
             _cloneProect = (Proect)orProect.Clone();
+            Marks = new ObservableCollection<Mark>(_cloneProect.Marks);
 
             _cloneProect.PropertyChanged += Proect_PropertyChanged;
+
+            _newMark = "";
         }
 
         public void Dispose() => _cloneProect.PropertyChanged -= Proect_PropertyChanged;
         private void Proect_PropertyChanged(object sender, PropertyChangedEventArgs e) => OnPropertyChanged(e.PropertyName);
 
-        #region prop  
-        #region ClonProperty 
+        #region prop
+
         public string Name
         {
             get => _cloneProect.Name;
             set => _cloneProect.Name = value;
         }
+
         public string Description
         {
             get => _cloneProect.Description;
             set => _cloneProect.Description = value;
         }
 
-        public ObservableCollection<string> Marks
+        public ObservableCollection<Mark> Marks { get; set; } 
+
+        public string NewMark
         {
-            get => _cloneProect.Marks;
+            get => _newMark;
             set
             {
-                _cloneProect.Marks = value;
-                _wasChange = true;
-            }
-        } 
-        #endregion
-
-
-        public string SelectedMark
-        {
-            get => _selectedMark;
-            set
-            {
-                if (_selectedMark == value) return;
-                _selectedMark = value;
-                OnPropertyChanged(nameof(SelectedMark));
+                if (_newMark == value) return;
+                _newMark = value;
+                OnPropertyChanged(nameof(NewMark));
             }
         } 
         #endregion
@@ -86,11 +78,13 @@ namespace projectX.ViewModel.proectVM
                 return _addMarkCommnad ??
                        (_addMarkCommnad = new RelayCommand(obj =>
                        {
-                           _cloneProect.Marks.Add(SelectedMark);
-                           SelectedMark = null;
+                           var mark = _markProvider.AddMark(NewMark);
+                           Marks.Add(mark);
+                           _cloneProect.Marks.Add(mark);
+
+                           NewMark = "";
                            _wasChange = true;
-                       }, obj => !string.IsNullOrEmpty(SelectedMark) && SelectedMark != " " && !_cloneProect.Marks.Contains(SelectedMark))
-                       );
+                       }, obj => !string.IsNullOrWhiteSpace(NewMark)));
             }
         }
 
@@ -102,12 +96,10 @@ namespace projectX.ViewModel.proectVM
                 return _deleteMarkCommnad ??
                        (_deleteMarkCommnad = new RelayCommand(obj =>
                        {
-                           if (!_cloneProect.Marks.Contains(SelectedMark)) return;
-                           _cloneProect.Marks.Remove(SelectedMark);
-                           SelectedMark = null;
+                           Marks.Remove((Mark) obj);
+                           _cloneProect.Marks.Remove((Mark)obj);
                            _wasChange = true;
-                       }, obj => !string.IsNullOrEmpty(SelectedMark) && _cloneProect.Marks.Contains(SelectedMark))
-                       );
+                       }));
             }
         }
 
@@ -120,11 +112,11 @@ namespace projectX.ViewModel.proectVM
                 return _saveProectCommand ??
                        (_saveProectCommand = new RelayCommand(obj =>
                        {
-                           _data.EditProect(_cloneProect);
-                           _originalProect = (Proect)_cloneProect.Clone();
+                           _proectProvider.EditProect(_cloneProect);
+                           EditItem?.Invoke(_cloneProect.Id);
+
                            _wasChange = false;
-                       }, x => ReadeToSave())
-                       );
+                       }, x => ReadeToSave()));
             }
         }
 

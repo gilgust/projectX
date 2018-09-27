@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using projectX.domain;
 using projectX.Data.interfaces;
@@ -13,9 +14,6 @@ namespace projectX.Data
 {
     class CasesProvider : ICaseCrud
     {
-        public CasesProvider()
-        { }
-
         private static ObservableCollection<Case> _cases;
         public ObservableCollection<Case> Cases
         {
@@ -28,16 +26,19 @@ namespace projectX.Data
                 return _cases;
             }
             set => _cases = value;
-        }
-
-        public ObservableCollection<string> Marks { get; set; }
+        } 
 
         public Case AddCase(Case newCase)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
+                foreach (var mark in newCase.Marks)
+                {
+                    db.Marks.Attach(mark);
+                }
                 var a =  db.Cases.Add(newCase);
                 db.SaveChanges();
+                Cases.Add(a);
                 return a;
             }
         }
@@ -55,34 +56,48 @@ namespace projectX.Data
         }
 
         public void EditCase(Case newCase)
-        {
+        { 
             using (ApplicationContext db =new ApplicationContext())
             {
-                var item = db.Cases.Find(newCase.Id);
-                if (item == null) return;
+                foreach (var item in newCase.Marks)
+                {
+                    db.Marks.Attach(item);
+                }
+                 
+                var caseFromDb = db.Cases.Include(c => c.Marks).Include(c => c.ImgSrc).First(c => c.Id == newCase.Id);
 
-                item = db.Cases.Include(c => c.Marks).Include(c => c.ImgSrc).First(c => c.Id == newCase.Id);
+                if (caseFromDb.Name != newCase.Name)
+                    caseFromDb.Name = newCase.Name;
 
-                if (item.Name != newCase.Name)
-                    item.Name = newCase.Name;
+                if (caseFromDb.Description != newCase.Description)
+                    caseFromDb.Description = newCase.Description;
 
-                if (item.Description != newCase.Description)
-                    item.Description = newCase.Description;
-
-                item.Marks.RemoveAll(el => !newCase.Marks.Exists(el2 => el2.Id == el.Id));
+//A skilled wordpress marks
                 foreach (var mark in newCase.Marks)
                 {
-                    if(!item.Marks.Exists(el => el.Id == mark.Id))
-                        item.Marks.Add(mark);
+                    if(!caseFromDb.Marks.Exists(m => m.Id == mark.Id))
+                        caseFromDb.Marks.Add(mark);
                 }
-                item.ImgSrc.RemoveAll(el => !newCase.ImgSrc.Exists(el2 => el2.Id == el.Id));
+                caseFromDb.Marks.RemoveAll(m => !newCase.Marks.Exists(m2 => m2.Id == m.Id));
+
+//add and delete img
                 foreach (var img in newCase.ImgSrc)
                 {
-                    if (!item.ImgSrc.Exists(el => el.Id == img.Id))
-                        item.ImgSrc.Add(img);
-                }
+                    if(img.Id == 0)
+                        caseFromDb.ImgSrc.Add(img);
+                } 
 
-                db.Entry(item).State = EntityState.Modified;
+                var remodeImgList = new List<Img>();
+                foreach (var img in caseFromDb.ImgSrc)
+                {
+                    if (!newCase.ImgSrc.Exists(i => i.Id == img.Id))
+                    {
+                        remodeImgList.Add(img);
+                    }
+                }
+                db.Imgs.RemoveRange(remodeImgList);
+
+
                 db.SaveChanges();
             }
         }
@@ -91,11 +106,11 @@ namespace projectX.Data
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                return db.Cases.Include(c => c.Marks).Include(c => c.ImgSrc).FirstOrDefault(c => c.Id == id);
+                return db.Cases.Include(c => c.Marks).Include(c => c.ImgSrc).Include(c => c.CaseResults).FirstOrDefault(c => c.Id == id);
             }
         }
 
-        private List<Case> GetCases()
+        public List<Case> GetCases()
         {
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -103,11 +118,8 @@ namespace projectX.Data
                 var casesList = db.Cases.ToList();
                 return casesList;
             }
-        }
-
-        
-
-        private async Task<List<Case>> GetCasesAsync()
+        } 
+        public async Task<List<Case>> GetCasesAsync()
         {
             return await Task.Run(() => GetCases());
         }

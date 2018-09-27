@@ -17,9 +17,10 @@ namespace projectX.domain
 
         public Proect()
         {
-            //Id = Guid.NewGuid().GetHashCode();
-            //Cases = new ObservableCollection<Case>();
-            Marks = new ObservableCollection<string>();
+            Id = Guid.NewGuid().GetHashCode();
+
+            Marks = new List<Mark>();
+            CaseResults = new List<CaseResult>();
         }
 
         #region prop
@@ -45,9 +46,10 @@ namespace projectX.domain
                 _description = value;
                 OnPropertyChanged(nameof(Description));
             }
-        }
-        //public ObservableCollection<Case> Cases { get; set; }
-        public ObservableCollection<string> Marks { get; set; }
+        } 
+
+        public List<Mark> Marks { get; set; }
+        public List<CaseResult> CaseResults { get; set; }
 
 
         #endregion
@@ -60,11 +62,23 @@ namespace projectX.domain
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        #endregion
-        
+        #endregion 
+        #region clone
         public object Clone()
         {
-            return this.MemberwiseClone();
+            var newProect = new Proect
+            {
+                Id = this.Id,
+                Name = this.Name,
+                Description = this.Description
+            };
+
+            var arM = new Mark[this.Marks.Count];
+            this.Marks.CopyTo(arM);
+            newProect.Marks = arM.ToList();
+
+            return newProect;
         }
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using projectX.services;
 using System.Windows;
+using projectX.Data;
 
 namespace projectX
 {
@@ -12,6 +13,6 @@ namespace projectX
         {
             InitializeComponent();
             InitFolders IF = new InitFolders(); 
-        }
+        } 
     }
 }

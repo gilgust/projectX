@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:projectX.Views.proect"
              xmlns:vm="clr-namespace:projectX.ViewModel.proectVM"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Background="AliceBlue">
 	<!--<UserControl.DataContext>
 		<vm:ProectViewModel/>
 	</UserControl.DataContext>-->
@@ -16,11 +16,11 @@
 
 				<TextBlock Text="Выбранный проект"/>
 				<TextBlock Text="Имя"/>
-				<TextBlock Text="{Binding Path=Proect.Name}"/>
+				<TextBlock Text="{Binding Path=Name}"/>
 				<TextBlock Text="Описание"/>
-				<TextBlock Text="{Binding Path=Proect.Description}" TextWrapping="Wrap"/>
+				<TextBlock Text="{Binding Path=Description}" TextWrapping="Wrap"/>
 
-				<ListBox ItemsSource="{Binding Path=Proect.Marks}" SelectedItem="{Binding Path=SelectedMark}">
+				<ListBox ItemsSource="{Binding Path=Marks}" SelectedItem="{Binding Path=SelectedMark}">
 					<ListBox.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
@@ -35,7 +35,19 @@
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<StackPanel>
-								<TextBlock Text="{Binding}" Margin="10 0 0 0"/>
+								<TextBlock Text="{Binding Path=Text}" Margin="10 0 0 0"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+
+				<Button Width="100" Height="20" Content="Add case" Command="{Binding Path=AddCaseResultCommand}"/>
+				<ListBox ItemsSource="{Binding Path=CaseResults}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Path=Case.Name}"/>
+								<Button Content="X"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
